@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>monday Smart Call — AI Credit Model</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --surface: #ffffff;
+    --surface2: #f1f3f5;
+    --border: #dee2e6;
+    --text: #212529;
+    --text-dim: #6c757d;
+    --primary: #6161ff;
+    --primary-light: #ededff;
+    --danger: #e44258;
+    --danger-light: #fdedef;
+    --success: #00ca72;
+    --success-light: #e6faf0;
+    --warning: #fdab3d;
+    --warning-light: #fff4e5;
+    --blue: #579bfc;
+    --blue-light: #eef4ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 48px 28px 100px; }
+
+  .header { margin-bottom: 48px; border-bottom: 2px solid var(--border); padding-bottom: 24px; }
+  .header h1 { font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+  .header .subtitle { color: var(--text-dim); font-size: 16px; margin-bottom: 12px; }
+  .header .meta { display: flex; gap: 24px; font-size: 13px; color: var(--text-dim); }
+  .header .meta span { display: flex; align-items: center; gap: 4px; }
+
+  h2 { font-size: 22px; font-weight: 700; margin: 48px 0 20px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); display: inline-block; }
+  h3 { font-size: 17px; font-weight: 600; margin: 28px 0 12px; color: var(--text); }
+  h4 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card h3 { margin-top: 0; }
+
+  .callout {
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .callout.info { background: var(--primary-light); border-left: 4px solid var(--primary); }
+  .callout.warn { background: var(--warning-light); border-left: 4px solid var(--warning); }
+  .callout.danger { background: var(--danger-light); border-left: 4px solid var(--danger); }
+  .callout.success { background: var(--success-light); border-left: 4px solid var(--success); }
+  .callout.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+  .callout strong { font-weight: 600; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0 20px; }
+  th { text-align: left; font-weight: 600; color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; padding: 10px 12px; border-bottom: 2px solid var(--border); background: var(--surface2); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+  .tag.green { background: var(--success-light); color: #0a7c46; }
+  .tag.red { background: var(--danger-light); color: #c03347; }
+  .tag.orange { background: var(--warning-light); color: #b07020; }
+  .tag.blue { background: var(--blue-light); color: #2c6bc4; }
+  .tag.purple { background: var(--primary-light); color: #4a4ad4; }
+  .tag.gray { background: var(--surface2); color: var(--text-dim); }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0 32px; }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .kpi .value { font-size: 32px; font-weight: 700; }
+  .kpi .label { font-size: 12px; color: var(--text-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .kpi.purple .value { color: var(--primary); }
+  .kpi.red .value { color: var(--danger); }
+  .kpi.green .value { color: var(--success); }
+  .kpi.orange .value { color: var(--warning); }
+
+  blockquote {
+    border-left: 4px solid var(--primary);
+    padding: 12px 20px;
+    margin: 16px 0;
+    background: var(--surface2);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  p { margin: 8px 0; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 4px 0; font-size: 14px; }
+
+  .pro-con { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+  .pro-list, .con-list { padding: 0; list-style: none; }
+  .pro-list li, .con-list li { padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .pro-list li::before { content: "+"; position: absolute; left: 0; color: var(--success); font-weight: 700; font-size: 16px; }
+  .con-list li::before { content: "\2212"; position: absolute; left: 2px; color: var(--danger); font-weight: 700; font-size: 18px; }
+
+  .pitch-box {
+    background: var(--primary-light);
+    border: 2px solid var(--primary);
+    border-radius: 14px;
+    padding: 28px;
+    margin: 20px 0;
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .pitch-box .pitch-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .phase-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .phase-card .phase-badge {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    padding: 2px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: white;
+  }
+  .phase-card .phase-badge.p1 { background: var(--blue); }
+  .phase-card .phase-badge.p2 { background: var(--warning); }
+  .phase-card .phase-badge.p3 { background: var(--success); }
+  .phase-card h3 { margin-top: 4px; }
+
+  .lesson-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .lesson-row:last-child { border-bottom: none; }
+  .lesson-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+    background: var(--danger-light); color: var(--danger);
+  }
+  .lesson-content { flex: 1; }
+  .lesson-content strong { font-weight: 600; }
+  .lesson-content .evidence { color: var(--text-dim); font-size: 13px; margin-top: 4px; font-style: italic; }
+  .lesson-content .fix { margin-top: 6px; font-size: 14px; }
+
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 2px solid var(--border);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .footer .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .footer .footer-item strong { display: block; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+
+  @media (max-width: 768px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .pro-con { grid-template-columns: 1fr; }
+    .footer .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>monday Smart Call &mdash; AI Credit Model</h1>
+    <div class="subtitle">Translating the credits economy decision into an executable pricing model</div>
+    <div class="meta">
+      <span><strong>Prepared for:</strong>&nbsp;Leadership / Pricing Team</span>
+      <span><strong>Date:</strong>&nbsp;March 9, 2026</span>
+      <span><strong>Author:</strong>&nbsp;Tal Moneta (PM)</span>
+      <span><strong>Status:</strong>&nbsp;<span class="tag purple">Implementation-Ready</span></span>
+    </div>
+  </div>
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi purple">
+      <div class="value">6</div>
+      <div class="label">Credits per Minute</div>
+    </div>
+    <div class="kpi green">
+      <div class="value">$0.06</div>
+      <div class="label">Per Minute (All-In)</div>
+    </div>
+    <div class="kpi orange">
+      <div class="value">600</div>
+      <div class="label">Credits per Number/Mo</div>
+    </div>
+    <div class="kpi red">
+      <div class="value">40-58%</div>
+      <div class="label">Gross Margin Range</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Decision context:</strong> monday has decided to integrate Smart Call into the platform-wide AI credits economy. This document translates that decision into a concrete model: exchange rates, bucket mapping, sales enablement, a calculator spec, and an alpha testing plan. The <a href="telephony-monetization-research.html">Monetization Research</a> documented the options and tradeoffs. This document makes the chosen option work.
+  </div>
+
+  <!-- SECTION 1: EXCHANGE RATE -->
+  <h2>1. The Exchange Rate</h2>
+
+  <div class="card">
+    <h3>Core Rate Card</h3>
+    <p style="margin-bottom:14px;color:var(--text-dim);">"All-inclusive" = PSTN call + recording + transcription + AI summary + CRM timeline logging. No hidden charges.</p>
+    <table>
+      <tr><th>Activity</th><th>Credits</th><th>$ Equivalent</th><th>COGS</th><th>Margin</th></tr>
+      <tr>
+        <td><strong>Outbound call (US domestic)</strong></td>
+        <td><span class="tag purple">6 credits/min</span></td>
+        <td class="num">$0.06/min</td>
+        <td class="num">$0.025&ndash;0.036</td>
+        <td class="num"><span class="tag green">40&ndash;58%</span></td>
+      </tr>
+      <tr>
+        <td><strong>Phone number rental</strong></td>
+        <td><span class="tag purple">600 credits/mo</span></td>
+        <td class="num">$6.00/mo</td>
+        <td class="num">~$1.15/mo</td>
+        <td class="num"><span class="tag green">81%</span></td>
+      </tr>
+      <tr>
+        <td>Chris AI voice agent</td>
+        <td><span class="tag orange">50 credits/min</span></td>
+        <td class="num">$0.50/min</td>
+        <td class="num">~$0.12/min</td>
+        <td class="num"><span class="tag green">76%</span></td>
+      </tr>
+      <tr>
+        <td>International call <span class="tag gray">Future</span></td>
+        <td><span class="tag blue">12&ndash;30 credits/min</span></td>
+        <td class="num">$0.12&ndash;0.30</td>
+        <td class="num">$0.06&ndash;0.25</td>
+        <td class="num"><span class="tag green">~50%</span></td>
+      </tr>
+      <tr>
+        <td>Inbound call <span class="tag gray">Future V2</span></td>
+        <td><span class="tag purple">6 credits/min</span></td>
+        <td class="num">$0.06/min</td>
+        <td class="num">~$0.025</td>
+        <td class="num"><span class="tag green">58%</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Why 6 Credits per Minute?</h3>
+    <table>
+      <tr><th>Rate</th><th>$/Min</th><th>Pros</th><th>Cons</th></tr>
+      <tr>
+        <td>5 credits</td>
+        <td class="num">$0.05</td>
+        <td>Round number, lowest customer price</td>
+        <td>Underprices 500-min tier ($25 vs planned $30), margin thins to ~28% on full COGS</td>
+      </tr>
+      <tr style="background:var(--primary-light);">
+        <td><strong>6 credits</strong></td>
+        <td class="num"><strong>$0.06</strong></td>
+        <td><strong>Matches planned 500-min tier exactly ($30), 58% margin on PSTN COGS</strong></td>
+        <td><strong>Eliminates volume discount taper at higher tiers</strong></td>
+      </tr>
+      <tr>
+        <td>10 credits</td>
+        <td class="num">$0.10</td>
+        <td>High margin (75%), room for regional multipliers</td>
+        <td>Overprices 2x vs market; no CRM charges &gt;$0.08/min for basic calling</td>
+      </tr>
+    </table>
+    <div class="callout success">
+      <strong>Human vs. AI positioning:</strong> At 6 credits/min (human) vs. 50 credits/min (Chris AI), the 8x multiplier creates an intuitive price signal &mdash; AI autonomy is premium, human calls are commodity.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Validation Against Planned Dollar Pricing</h3>
+    <table>
+      <tr><th>Usage</th><th>Credits</th><th>Credit Cost</th><th>Planned $</th><th>Delta</th></tr>
+      <tr><td>500 minutes</td><td class="num">3,000</td><td class="num">$30</td><td class="num">$30</td><td><span class="tag green">Exact match</span></td></tr>
+      <tr><td>1,000 minutes</td><td class="num">6,000</td><td class="num">$60</td><td class="num">$55</td><td><span class="tag orange">+$5 (+9%)</span></td></tr>
+      <tr><td>2,000 minutes</td><td class="num">12,000</td><td class="num">$120</td><td class="num">$100</td><td><span class="tag orange">+$20 (+20%)</span></td></tr>
+      <tr><td>1 number/mo</td><td class="num">600</td><td class="num">$6</td><td class="num">$6</td><td><span class="tag green">Exact match</span></td></tr>
+      <tr><td>3 numbers/mo</td><td class="num">1,800</td><td class="num">$18</td><td class="num">$15</td><td><span class="tag orange">+$3 (+20%)</span></td></tr>
+      <tr><td>5 numbers/mo</td><td class="num">3,000</td><td class="num">$30</td><td class="num">$20</td><td><span class="tag red">+$10 (+50%)</span></td></tr>
+    </table>
+    <div class="callout warn">
+      <strong>Volume discount tradeoff:</strong> Uniform credit pricing eliminates the $0.06 &rarr; $0.05/min taper. At 500 minutes, the math is identical. At 2,000 minutes, customers pay 20% more. The benefit: one rate, no confusion. Volume discounts can be reintroduced through bucket-level pricing if needed.
+    </div>
+  </div>
+
+  <!-- SECTION 2: BUCKET MAPPING -->
+  <h2>2. Bucket Mapping</h2>
+
+  <div class="card">
+    <h3>Customer Profiles &rarr; Credit Buckets</h3>
+    <p style="color:var(--text-dim);margin-bottom:14px;">How typical customer profiles map to existing monday AI credit buckets. Recommended bucket includes 20-75% headroom for spikes and other AI features.</p>
+    <table>
+      <tr><th>Profile</th><th>Reps</th><th>Daily Talk</th><th>Mo. Minutes</th><th>Calling Cr.</th><th>Number Cr.</th><th>Total</th><th>Bucket</th><th>$/Mo</th></tr>
+      <tr>
+        <td><strong>Solo rep</strong></td>
+        <td class="num">1</td><td class="num">30 min</td><td class="num">660</td><td class="num">3,960</td><td class="num">600</td><td class="num">4,560</td>
+        <td><span class="tag blue">8,000</span></td><td class="num"><strong>$80</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Small team</strong></td>
+        <td class="num">3</td><td class="num">45 min</td><td class="num">2,970</td><td class="num">17,820</td><td class="num">1,800</td><td class="num">19,620</td>
+        <td><span class="tag blue">20,000</span></td><td class="num"><strong>$200</strong></td>
+      </tr>
+      <tr style="background:var(--primary-light);">
+        <td><strong>SMB sales floor</strong></td>
+        <td class="num">5</td><td class="num">60 min</td><td class="num">6,600</td><td class="num">39,600</td><td class="num">3,000</td><td class="num">42,600</td>
+        <td><span class="tag purple">80,000</span></td><td class="num"><strong>$800</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Mid-market</strong></td>
+        <td class="num">10</td><td class="num">60 min</td><td class="num">13,200</td><td class="num">79,200</td><td class="num">6,000</td><td class="num">85,200</td>
+        <td><span class="tag blue">160,000</span></td><td class="num"><strong>$1,600</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Large team</strong></td>
+        <td class="num">25</td><td class="num">60 min</td><td class="num">33,000</td><td class="num">198,000</td><td class="num">15,000</td><td class="num">213,000</td>
+        <td><span class="tag blue">400,000</span></td><td class="num"><strong>$4,000</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Margin Analysis</h3>
+    <table>
+      <tr><th>Component</th><th>Revenue/Unit</th><th>COGS/Unit</th><th>Gross Margin</th><th>Notes</th></tr>
+      <tr>
+        <td>Calling (PSTN only)</td>
+        <td class="num">$0.06/min</td><td class="num">$0.0249/min</td>
+        <td class="num"><span class="tag green">58.5%</span></td>
+        <td>Conservative: excludes recording/transcription COGS</td>
+      </tr>
+      <tr>
+        <td>Calling (full stack)</td>
+        <td class="num">$0.06/min</td><td class="num">~$0.036/min</td>
+        <td class="num"><span class="tag green">40.0%</span></td>
+        <td>Includes recording + transcription + AI summary</td>
+      </tr>
+      <tr>
+        <td>Number rental</td>
+        <td class="num">$6.00/mo</td><td class="num">~$1.15/mo</td>
+        <td class="num"><span class="tag green">80.8%</span></td>
+        <td>High-margin anchor product</td>
+      </tr>
+      <tr>
+        <td>Chris AI agent</td>
+        <td class="num">$0.50/min</td><td class="num">~$0.12/min</td>
+        <td class="num"><span class="tag green">76.0%</span></td>
+        <td>AI processing premium justified by value</td>
+      </tr>
+    </table>
+    <div class="callout success">
+      <strong>Blended margin for typical SMB (3 reps, 20K bucket):</strong> ~43% gross margin on telephony activities. Number rentals (81% margin) offset the thinner calling margins (40% full-stack).
+    </div>
+  </div>
+
+  <!-- SECTION 3: SALES ENABLEMENT -->
+  <h2>3. Sales Enablement</h2>
+
+  <div class="pitch-box">
+    <div class="pitch-label">The 30-Second Pitch</div>
+    "Smart Call costs 6 credits per minute &mdash; that covers the call, recording, transcript, and AI summary, all logged to CRM automatically. A business number is 600 credits a month. Your typical 3-rep team needs about 20,000 credits &mdash; that's $200 a month, and the leftover credits work for any other AI features in monday."
+  </div>
+
+  <div class="card">
+    <h3>Credit-Per-Activity Quick Reference</h3>
+    <p style="color:var(--text-dim);margin-bottom:12px;">Sales should memorize this table. Conversion shortcut: minutes &times; 6 = credits. Credits &divide; 100 = dollars.</p>
+    <table>
+      <tr><th>What the Customer Does</th><th>Credits</th><th>$ Equivalent</th></tr>
+      <tr><td>Makes a 3-minute call</td><td class="num">18 credits</td><td class="num">$0.18</td></tr>
+      <tr><td>Makes a 5-minute call</td><td class="num">30 credits</td><td class="num">$0.30</td></tr>
+      <tr><td>Has a number for the month</td><td class="num">600 credits</td><td class="num">$6.00</td></tr>
+      <tr><td>Rep makes 15 calls/day (avg 3 min)</td><td class="num">270 credits/day</td><td class="num">$2.70/day</td></tr>
+      <tr><td>Rep's monthly total (22 working days)</td><td class="num">~5,940 credits</td><td class="num">~$59.40</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Bucket Recommendation Cheat Sheet</h3>
+    <p style="color:var(--text-dim);margin-bottom:12px;">When a prospect says "I have X reps," the AE should immediately know:</p>
+    <table>
+      <tr><th>"I Have..."</th><th>Say This</th><th>Bucket</th><th>$/Mo</th></tr>
+      <tr><td>1 rep</td><td>"The 8,000 credit bucket covers you, with room for AI features"</td><td><span class="tag blue">8,000</span></td><td class="num">$80</td></tr>
+      <tr><td>2&ndash;3 reps</td><td>"You'll want the 20,000 bucket &mdash; covers about 3 reps calling an hour a day"</td><td><span class="tag blue">20,000</span></td><td class="num">$200</td></tr>
+      <tr><td>4&ndash;5 reps</td><td>"The 40,000 bucket is your sweet spot"</td><td><span class="tag blue">40,000</span></td><td class="num">$400</td></tr>
+      <tr><td>5&ndash;10 reps</td><td>"Go with 80,000 &mdash; that's the most popular for sales teams"</td><td><span class="tag purple">80,000</span></td><td class="num">$800</td></tr>
+      <tr><td>10&ndash;20 reps</td><td>"160,000 credits &mdash; and these credits also cover your AI workflows"</td><td><span class="tag blue">160,000</span></td><td class="num">$1,600</td></tr>
+      <tr><td>20+ reps</td><td>"Let's size this with the calculator &mdash; usually 400K+ credits"</td><td><span class="tag blue">400,000+</span></td><td class="num">$4,000+</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>FAQ &mdash; What Sales Will Be Asked</h3>
+    <p style="color:var(--text-dim);margin-bottom:12px;">Modeled on real questions from #ask-monday-notetaker &mdash; every pattern below has an analog from the Notetaker launch.</p>
+    <table>
+      <tr><th style="width:38%">Question</th><th>Answer</th></tr>
+      <tr>
+        <td><strong>"How much does a call actually cost?"</strong></td>
+        <td>6 credits per minute = $0.06. A typical 3-minute sales call costs 18 credits ($0.18). Everything is included &mdash; recording, transcript, AI summary.</td>
+      </tr>
+      <tr>
+        <td><strong>"Is the AI transcription extra?"</strong></td>
+        <td>Included. 6 credits/min covers EVERYTHING. No separate AI action charge. This is different from workflows where AI blocks use credits &mdash; Smart Call bundles it all in.</td>
+      </tr>
+      <tr>
+        <td><strong>"How do credits relate to minutes?"</strong></td>
+        <td>Divide credits by 6 to get minutes. An 8,000-credit bucket &asymp; 1,300 minutes. A 20,000 bucket &asymp; 3,000 minutes.</td>
+      </tr>
+      <tr>
+        <td><strong>"What if they run out mid-call?"</strong></td>
+        <td>Calls in progress are NEVER cut off. The call completes, and the account goes into an overage buffer. Alerts fire at 50%, 80%, 100%.</td>
+      </tr>
+      <tr>
+        <td><strong>"Customer uses calling AND Notetaker AND workflows. How to budget?"</strong></td>
+        <td>All from the same credit pool. If they need 20K for calling and 5K for AI usage, recommend the 40K bucket. Use the calculator to size it.</td>
+      </tr>
+      <tr>
+        <td><strong>"Per user or per account?"</strong></td>
+        <td>Credits are pooled at the account level. The whole team shares the credit bucket. Per-user consumption is tracked in the admin dashboard.</td>
+      </tr>
+      <tr>
+        <td><strong>"Can admins control who can call?"</strong></td>
+        <td>Yes. Admin controls available from day one. Grant/revoke Smart Call access per user from Settings &rarr; Usage.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Objection Handling</h3>
+    <table>
+      <tr><th style="width:35%">Prospect Says</th><th>Respond With</th></tr>
+      <tr>
+        <td><strong>"HubSpot just gives me 2,000 minutes."</strong></td>
+        <td>HubSpot charges $100/user/month &mdash; $1,000/month for 10 reps. Our 80,000 credit bucket covers 10 reps calling an hour a day for $800/month, AND those credits work for AI features too. Plus we include transcription and AI summaries that HubSpot charges extra for.</td>
+      </tr>
+      <tr>
+        <td><strong>"I don't understand credits."</strong></td>
+        <td>Think of it this way: 6 credits = 1 minute. Your 20,000 credit bucket = ~3,000 minutes. If you call less one month, those credits aren't wasted &mdash; they power your AI workflows instead.</td>
+      </tr>
+      <tr>
+        <td><strong>"Aircall is $30/user and I don't have to think."</strong></td>
+        <td>Aircall &times; 10 reps = $300/month plus integration fees. Smart Call is native &mdash; every call auto-logs with AI summaries. 80,000 credits covers 10 heavy-calling reps for $800/month with no integration, no separate recording tool, no manual data entry.</td>
+      </tr>
+      <tr>
+        <td><strong>"What if we call more than expected?"</strong></td>
+        <td>Auto-recharge is available &mdash; set a threshold and we add credits automatically. Or upgrade buckets mid-cycle. Active calls are never interrupted.</td>
+      </tr>
+      <tr>
+        <td><strong>"How do I explain this to my CFO?"</strong></td>
+        <td>[reps] &times; [calls/day] &times; [avg duration] &times; 6 credits &times; 22 days = monthly credits. Pick the bucket. Monthly cost is fixed and predictable. We also provide a usage dashboard to track actuals vs. budget.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SECTION 4: CALCULATOR -->
+  <h2>4. Credit Calculator Spec</h2>
+
+  <div class="card">
+    <h3>Inputs</h3>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Default</th><th>Constraints</th></tr>
+      <tr><td>Number of sales reps</td><td>Integer</td><td class="num">3</td><td>Min: 1, Max: 500</td></tr>
+      <tr><td>Average calls per rep per day</td><td>Integer</td><td class="num">15</td><td>Min: 1, Max: 100</td></tr>
+      <tr><td>Average call duration (minutes)</td><td>Decimal</td><td class="num">3.0</td><td>Min: 0.5, Max: 60</td></tr>
+      <tr><td>Phone numbers needed</td><td>Integer</td><td class="num">= reps</td><td>Min: 1, Max: reps &times; 2</td></tr>
+      <tr><td>Working days per month</td><td>Integer</td><td class="num">22</td><td>Min: 15, Max: 30</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Calculation Logic</h3>
+    <div style="background:var(--surface2);border-radius:8px;padding:18px;font-family:monospace;font-size:13px;line-height:1.8;margin:8px 0;">
+      monthly_minutes = reps &times; calls_per_day &times; avg_duration &times; working_days<br>
+      calling_credits = monthly_minutes &times; 6<br>
+      number_credits = phone_numbers &times; 600<br>
+      total_credits = calling_credits + number_credits<br>
+      <br>
+      recommended_bucket = next_bucket_up(total_credits)<br>
+      &nbsp;&nbsp;buckets = [8K, 20K, 40K, 80K, 160K, 400K, 800K, 2M]<br>
+      <br>
+      monthly_cost = recommended_bucket &times; $0.01<br>
+      cost_per_rep = monthly_cost / reps<br>
+      headroom = recommended_bucket - total_credits
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Outputs</h3>
+    <table>
+      <tr><th>Output</th><th>Format</th><th>Example (3 reps, 15 calls/day, 3 min avg)</th></tr>
+      <tr><td>Monthly calling minutes</td><td>Number</td><td class="num">2,970 min</td></tr>
+      <tr><td>Calling credits</td><td>Number</td><td class="num">17,820 credits</td></tr>
+      <tr><td>Number credits</td><td>Number</td><td class="num">1,800 credits</td></tr>
+      <tr><td><strong>Total credits needed</strong></td><td>Highlighted number</td><td class="num"><strong>19,620 credits</strong></td></tr>
+      <tr><td><strong>Recommended bucket</strong></td><td>Badge</td><td><span class="tag purple">20,000 credits/month</span></td></tr>
+      <tr><td><strong>Monthly cost</strong></td><td>Large display</td><td class="num"><strong>$200/month</strong></td></tr>
+      <tr><td>Cost per rep</td><td>Number</td><td class="num">$66.67/rep</td></tr>
+      <tr><td>Effective $/min</td><td>Number</td><td class="num">$0.067/min</td></tr>
+      <tr><td>Headroom</td><td>Progress bar</td><td>380 credits (1.9%) for other AI features</td></tr>
+    </table>
+
+    <h4>Bonus Features</h4>
+    <ul>
+      <li><strong>Competitor comparison toggle:</strong> Side-by-side with Aircall and HubSpot Pro pricing</li>
+      <li><strong>Volume slider:</strong> Drag to see how costs scale with call volume</li>
+      <li><strong>Export to PDF:</strong> Generate a branded proposal document</li>
+      <li><strong>Share link:</strong> URL with parameters for prospect self-service</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 5: ALPHA TESTING -->
+  <h2>5. Alpha Testing Strategy</h2>
+
+  <div class="callout blue">
+    <strong>Context:</strong> Smart Call alpha runs with 10 accounts, ~35 reps, US outbound only, iOS only, and no billing. The alpha tests adoption and call quality. We layer credit validation on top without disrupting the core experiment.
+  </div>
+
+  <div class="phase-card">
+    <span class="phase-badge p1">Phase 1: Weeks 1&ndash;4</span>
+    <h3>Shadow Pricing</h3>
+    <p><strong>Goal:</strong> Collect real usage data and validate the 6-credit/min rate.</p>
+    <table>
+      <tr><th>Action</th><th>Detail</th></tr>
+      <tr><td>Enable usage tracking</td><td>Log every call's duration per-rep, per-account. Calculate what the credit cost WOULD have been.</td></tr>
+      <tr><td>Show shadow dashboard</td><td>Display a "Credit Meter" widget in admin view: "If Smart Call were billed, your team would have consumed X credits this month."</td></tr>
+      <tr><td>Don't restrict anything</td><td>Calling remains free and unlimited. The dashboard is informational only.</td></tr>
+      <tr><td>Track patterns</td><td>Avg call duration, calls/rep/day, peak hours, weekend usage, longest/shortest calls.</td></tr>
+    </table>
+    <div class="callout success"><strong>Success metric:</strong> &gt;80% of alpha accounts fall within the predicted bucket range from the mapping table.</div>
+  </div>
+
+  <div class="phase-card">
+    <span class="phase-badge p2">Phase 2: Weeks 5&ndash;8</span>
+    <h3>Soft Cap</h3>
+    <p><strong>Goal:</strong> Test whether users understand credit budgeting and can manage consumption.</p>
+    <table>
+      <tr><th>Action</th><th>Detail</th></tr>
+      <tr><td>Assign credit budget</td><td>Give each alpha account a credit budget based on Phase 1 usage (rounded up to nearest bucket).</td></tr>
+      <tr><td>Enable alerts</td><td>Push notifications at 50%, 80%, and 95% of budget consumed.</td></tr>
+      <tr><td>Track at cap</td><td>When budget is "hit": don't cut off calling, but show prominent "You've exceeded your budget" banner. Log behavior changes.</td></tr>
+      <tr><td>Measure comprehension</td><td>Survey: "How many credits does a 5-minute call cost?" (correct: 30). Track % correct.</td></tr>
+    </table>
+    <div class="callout success"><strong>Success metric:</strong> &gt;70% comprehension rate. &lt;10% reduction in call volume after soft cap (no budget anxiety).</div>
+  </div>
+
+  <div class="phase-card">
+    <span class="phase-badge p3">Phase 3: Weeks 6&ndash;8</span>
+    <h3>Willingness to Pay</h3>
+    <p><strong>Goal:</strong> Validate the 6-credit rate against real user willingness to pay.</p>
+    <table>
+      <tr><th>Action</th><th>Detail</th></tr>
+      <tr><td>Personalized pricing</td><td>Show each champion: "Your team used X minutes. That's Y credits ($Z/month) at the [bucket] tier."</td></tr>
+      <tr><td>Van Westendorp</td><td>4 questions: too cheap? bargain? expensive? too expensive?</td></tr>
+      <tr><td>Purchase intent</td><td>"Would you purchase Smart Call at this price? Yes / Yes if [condition] / No, because [reason]"</td></tr>
+      <tr><td>Comparison anchor</td><td>"How does this compare to your current business calling spend?" (Most use personal phones = $0.)</td></tr>
+    </table>
+    <div class="callout success"><strong>Success metric:</strong> &gt;60% purchase intent. Van Westendorp acceptable range includes $0.06/min.</div>
+  </div>
+
+  <div class="card">
+    <h3>Alpha Metrics Dashboard</h3>
+    <table>
+      <tr><th>Metric</th><th>Definition</th><th>Target</th></tr>
+      <tr><td>Avg minutes/rep/day</td><td>Total minutes &divide; active reps &divide; active days</td><td class="num">30&ndash;60 min</td></tr>
+      <tr><td>Avg call duration</td><td>Total minutes &divide; total calls</td><td class="num">2&ndash;4 min</td></tr>
+      <tr><td>Credit comprehension</td><td>% who correctly predict credit cost of a 5-min call</td><td class="num">&gt;70%</td></tr>
+      <tr><td>Budget anxiety score</td><td>Self-reported 1&ndash;5: "How concerned about running out?"</td><td class="num">&lt;2.5 / 5</td></tr>
+      <tr><td>Purchase intent</td><td>% who say "Yes" or "Yes if..." to purchase question</td><td class="num">&gt;60%</td></tr>
+      <tr><td>NPS (credit model)</td><td>"How likely to recommend this pricing model?" (0&ndash;10)</td><td class="num">&gt;30</td></tr>
+    </table>
+  </div>
+
+  <!-- SECTION 6: CRITICAL CONSIDERATIONS -->
+  <h2>6. Critical Considerations</h2>
+
+  <div class="card">
+    <h3>6A. The Shared Pool Question</h3>
+    <p>Smart Call credits draw from the same AI credit pool as Notetaker, workflows, AI blocks, and Sidekick.</p>
+    <div class="pro-con">
+      <div>
+        <h4>Upside</h4>
+        <ul class="pro-list">
+          <li>Flexibility: unused calling credits power AI workflows</li>
+          <li>One balance, one dashboard, one invoice line</li>
+          <li>Cross-sell: customers discover AI features through credit headroom</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Risk</h4>
+        <ul class="con-list">
+          <li>Budget competition: heavy calling starves AI workflows</li>
+          <li>Notetaker precedent: "free" summary costs credits in workflows</li>
+          <li>Attribution confusion: what consumed my credits?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout info">
+      <strong>Recommendation:</strong> Make the shared pool work through radical transparency. The admin dashboard MUST break down consumption by source (Smart Call vs. Notetaker vs. Workflows vs. Other). Smart Call's 6 credits/min rate NEVER triggers additional charges &mdash; even when the AI summary feeds downstream workflows.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>6B. Volume Discount Gap</h3>
+    <p>The planned dollar pricing had a taper ($0.06 &rarr; $0.055 &rarr; $0.05/min). Uniform 6 credits/min eliminates it.</p>
+    <table>
+      <tr><th>Option</th><th>Mechanism</th><th>Pros</th><th>Cons</th></tr>
+      <tr style="background:var(--success-light);">
+        <td><strong>Accept uniform</strong></td>
+        <td>6 credits/min at all volumes</td>
+        <td>Simplest. One rate.</td>
+        <td>High-volume pays 20% more</td>
+      </tr>
+      <tr>
+        <td>Smart Call Packs</td>
+        <td>Bundled credit blocks at a discount</td>
+        <td>Feels like a deal</td>
+        <td>Adds SKU complexity</td>
+      </tr>
+      <tr>
+        <td>Bucket discounts</td>
+        <td>Larger buckets = lower $/credit</td>
+        <td>Applies to ALL features</td>
+        <td>Changes $0.01/credit assumption</td>
+      </tr>
+    </table>
+    <div class="callout success">
+      <strong>Recommended:</strong> Start uniform at GA. Monitor alpha feedback. If high-volume accounts push back, introduce bucket-level volume discounts (not telephony-specific packs).
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>6C. International Calling (Future)</h3>
+    <p>US domestic is Phase 1. International calls have 3&ndash;10x higher Twilio COGS.</p>
+    <table>
+      <tr><th>Destination</th><th>Est. COGS</th><th>Credit Rate</th><th>Multiplier</th></tr>
+      <tr><td>US / Canada</td><td class="num">$0.025/min</td><td class="num">6 credits/min</td><td><span class="tag blue">1x</span></td></tr>
+      <tr><td>UK / Western Europe</td><td class="num">$0.06&ndash;0.10</td><td class="num">12 credits/min</td><td><span class="tag blue">2x</span></td></tr>
+      <tr><td>Australia / Japan</td><td class="num">$0.08&ndash;0.15</td><td class="num">18 credits/min</td><td><span class="tag orange">3x</span></td></tr>
+      <tr><td>LatAm / Africa</td><td class="num">$0.10&ndash;0.25</td><td class="num">30 credits/min</td><td><span class="tag red">5x</span></td></tr>
+    </table>
+    <p style="color:var(--text-dim);font-size:13px;">Design principle: clean integer multipliers for sales simplicity. Cluster by region, not per-country. Not needed for alpha or GA.</p>
+  </div>
+
+  <!-- NOTETAKER LESSONS -->
+  <h2>7. Notetaker Lessons Applied</h2>
+
+  <div class="callout warn">
+    <strong>Source:</strong> Analysis of 80+ messages in #ask-monday-notetaker. Every pattern below has direct evidence from the Notetaker launch and a specific fix for Smart Call.
+  </div>
+
+  <div class="card">
+    <div class="lesson-row">
+      <div class="lesson-num">1</div>
+      <div class="lesson-content">
+        <strong>Credit cost per activity is undocumented</strong>
+        <div class="evidence">"The exact number of AI credits consumed per hour of recording is not specified in the provided documents." &mdash; Jose Escobar, Knowledge Expert team</div>
+        <div class="fix"><span class="tag green">Fix:</span> Publish "6 credits/minute" in help center, internal wiki, and sales materials <em>before</em> launch. Pin it in #ask-smart-call.</div>
+      </div>
+    </div>
+    <div class="lesson-row">
+      <div class="lesson-num">2</div>
+      <div class="lesson-content">
+        <strong>No per-user usage visibility</strong>
+        <div class="evidence">"Is there a way to see on BigBrain the AI Notetaker consumption (hours taken and by whom)?" &mdash; Angelica Balbuena</div>
+        <div class="fix"><span class="tag green">Fix:</span> Admin &rarr; Usage shows per-rep credit consumption: total credits, calling minutes, calls made, trend chart. Available from day one.</div>
+      </div>
+    </div>
+    <div class="lesson-row">
+      <div class="lesson-num">3</div>
+      <div class="lesson-content">
+        <strong>Admin controls arrived late</strong>
+        <div class="evidence">"How can I ensure that only admins use the notetaker?" &mdash; Hanna Grande. "Can customers select who can use the notetaker?" &mdash; Daniel Tsivin. "How does an Admin Disable Notetaker?" &mdash; Troy Gaub.</div>
+        <div class="fix"><span class="tag green">Fix:</span> Admin controls from day one. Settings &rarr; Smart Call &rarr; User Access. Grant/revoke per user. Set per-user monthly credit limits.</div>
+      </div>
+    </div>
+    <div class="lesson-row">
+      <div class="lesson-num">4</div>
+      <div class="lesson-content">
+        <strong>Trial management is ad-hoc chaos</strong>
+        <div class="evidence">"Is there a way we can add additional notetaker trial hours?" &mdash; Shira Lechner. "Customer used all trial hours by leaving Zoom open." &mdash; Melissa Winters. "Is there anyway to do this for 1 day?" &mdash; Kristen Latrenta.</div>
+        <div class="fix"><span class="tag green">Fix:</span> Defined trial process: X credits allocation per account. Sales Ops one-click extension. Max 1 extension. Auto-expiry after 30 days.</div>
+      </div>
+    </div>
+    <div class="lesson-row">
+      <div class="lesson-num">5</div>
+      <div class="lesson-content">
+        <strong>Accidental usage burns budget</strong>
+        <div class="evidence">"Customer used all of their Notetaker trial hours by leaving a Zoom open unoccupied." &mdash; Melissa Winters</div>
+        <div class="fix"><span class="tag green">Fix:</span> Idle protection: auto-disconnect after 60s silence (15s warning tone). Max call duration cap (default 120 min). Pocket-dial detection (terminate if no voice in first 10s).</div>
+      </div>
+    </div>
+    <div class="lesson-row">
+      <div class="lesson-num">6</div>
+      <div class="lesson-content">
+        <strong>"Included" vs. "extra" is unclear</strong>
+        <div class="evidence">"The user asks if there is a way to pull the summary without using the 'summarize with AI block' to save on AI actions." &mdash; Ron Tribuchovski</div>
+        <div class="fix"><span class="tag green">Fix:</span> Absolute clarity: "6 credits/minute includes the call, recording, transcription, AND the AI summary. Workflow AI actions have their own cost &mdash; but the call itself is always just 6 credits/minute."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: CHECKLIST -->
+  <h2>8. Implementation Checklist</h2>
+
+  <div class="card">
+    <table>
+      <tr><th>#</th><th>Item</th><th>Owner</th><th>Status</th><th>Dependency</th></tr>
+      <tr><td class="num">1</td><td>Finalize 6 credits/min rate with pricing team</td><td>PM + Pricing</td><td><span class="tag orange">Pending</span></td><td>&mdash;</td></tr>
+      <tr><td class="num">2</td><td>Confirm $0.01/credit uniform across bucket sizes</td><td>PM + Pricing</td><td><span class="tag orange">Pending</span></td><td>&mdash;</td></tr>
+      <tr><td class="num">3</td><td>Build credit consumption tracking in alpha</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>Alpha infra</td></tr>
+      <tr><td class="num">4</td><td>Design shadow pricing dashboard UI</td><td>Design</td><td><span class="tag orange">Pending</span></td><td>#3</td></tr>
+      <tr><td class="num">5</td><td>Document credit rates in help center</td><td>Knowledge</td><td><span class="tag orange">Pending</span></td><td>#1</td></tr>
+      <tr><td class="num">6</td><td>Create sales enablement one-pager</td><td>PM + Sales Ops</td><td><span class="tag orange">Pending</span></td><td>#1</td></tr>
+      <tr><td class="num">7</td><td>Build credit calculator (web tool)</td><td>Eng / PM</td><td><span class="tag orange">Pending</span></td><td>#1</td></tr>
+      <tr><td class="num">8</td><td>Implement idle protection (auto-disconnect)</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>Alpha build</td></tr>
+      <tr><td class="num">9</td><td>Build admin controls (user access)</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>GA requirement</td></tr>
+      <tr><td class="num">10</td><td>Build per-user usage dashboard</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>GA requirement</td></tr>
+      <tr><td class="num">11</td><td>Define trial credit allocation + extension process</td><td>PM + Sales Ops</td><td><span class="tag orange">Pending</span></td><td>Before Phase 2</td></tr>
+      <tr><td class="num">12</td><td>Run alpha Phase 1 (shadow pricing)</td><td>PM</td><td><span class="tag orange">Pending</span></td><td>#3, #4</td></tr>
+      <tr><td class="num">13</td><td>Run alpha Phase 2 (soft cap)</td><td>PM</td><td><span class="tag orange">Pending</span></td><td>Phase 1 done</td></tr>
+      <tr><td class="num">14</td><td>Run alpha Phase 3 (WTP survey)</td><td>PM + Research</td><td><span class="tag orange">Pending</span></td><td>Phase 2 data</td></tr>
+      <tr><td class="num">15</td><td>Real-time credit deduction infrastructure</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>GA requirement</td></tr>
+      <tr><td class="num">16</td><td>Auto-recharge functionality</td><td>Engineering</td><td><span class="tag orange">Pending</span></td><td>GA requirement</td></tr>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-grid">
+      <div class="footer-item">
+        <strong>This works if</strong>
+        The 6-credit/min all-inclusive rate is simple enough for AEs to explain in one sentence, transparent enough for CFOs to forecast, and the alpha validates that users understand the credit model without pricing becoming an adoption barrier.
+      </div>
+      <div class="footer-item">
+        <strong>We'll know it's working when</strong>
+        &gt;70% alpha comprehension rate on credit costs, &gt;60% purchase intent at $0.06/min, and zero "credit confusion" as a top-3 support category in the first 90 days post-GA.
+      </div>
+      <div class="footer-item">
+        <strong>Most likely to fail because</strong>
+        The shared credit pool creates budget anxiety &mdash; sales reps worry about "using up" credits that their marketing team needs for AI workflows, leading to under-calling and defeating the core adoption hypothesis. Mitigation: per-team allocations within the pool and clear "headroom built in" messaging.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
