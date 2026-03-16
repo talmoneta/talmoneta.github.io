@@ -734,6 +734,9 @@ body {
   font-weight: 600;
   font-size: 15px;
   margin-bottom: 16px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 .footer-contact:hover { opacity: 0.9; }
 
@@ -1194,7 +1197,8 @@ body {
 
 <!-- Footer -->
 <div class="footer">
-  <a href="https://mail.google.com/mail/?view=cm&to=talmo@monday.com&su=monday+Smart+Call+Alpha+-+Question" target="_blank" rel="noopener" class="footer-contact" style="cursor:pointer;">Questions? Email Tal Moneta</a>
+  <button class="footer-contact" onclick="window.open('https://mail.google.com/mail/?view=cm&amp;to=talmo@monday.com&amp;su=monday+Smart+Call+Alpha+-+Question','_blank');">Questions? Email Tal Moneta</button>
+  <p style="margin-top:6px;font-size:13px;color:#6c757d;">Or email directly: <strong>talmo@monday.com</strong></p>
   <p>You're receiving this because you've joined the monday Smart Call alpha program.<br>Tal Moneta &mdash; Product Manager, monday.com</p>
 </div>
 
