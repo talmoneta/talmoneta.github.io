@@ -740,6 +740,32 @@ body {
 }
 .footer-contact:hover { opacity: 0.9; }
 
+/* Jump nav */
+.jump-nav {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  justify-content: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.jump-nav a {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 4px 0;
+  white-space: nowrap;
+}
+.jump-nav a:hover {
+  color: var(--accent);
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .container { padding: 20px 16px 40px; }
@@ -769,10 +795,20 @@ body {
   </div>
 </div>
 
+<nav class="jump-nav">
+  <a href="#what">What is Smart Call</a>
+  <a href="#how">How It Works</a>
+  <a href="#saves-time">Time Saved</a>
+  <a href="#included">What's Included</a>
+  <a href="#ask">What We Ask</a>
+  <a href="#faq">FAQ</a>
+  <a href="#next">Next Steps</a>
+</nav>
+
 <div class="container">
 
 <!-- Section 1: What is Smart Call -->
-<div class="section">
+<div id="what" class="section">
   <h2>What is monday Smart Call?</h2>
   <p class="lead-text">monday Smart Call is a native calling feature inside the monday CRM mobile app. Each rep receives a <strong>new, dedicated US virtual business number</strong> &mdash; a VoIP number that works over the internet (similar to WhatsApp or FaceTime Audio).</p>
   <p>Using this dedicated number is what allows us to <strong>record, transcribe, and summarize every call automatically</strong> &mdash; something that isn't possible with regular phone calls. The prospect sees the business number as caller ID &mdash; your reps' personal numbers are never exposed.</p>
@@ -781,7 +817,7 @@ body {
 </div>
 
 <!-- Section 2: How It Works -->
-<div class="section">
+<div id="how" class="section">
   <h2>How It Works</h2>
 
   <div class="flow-steps">
@@ -1024,7 +1060,7 @@ body {
 </div>
 
 <!-- Section 3: How It Saves You Time -->
-<div class="section">
+<div id="saves-time" class="section">
   <h2>How It Saves You Time</h2>
   <div class="comparison">
     <div class="comparison-col before">
@@ -1054,7 +1090,7 @@ body {
 </div>
 
 <!-- Section 4: What's Included -->
-<div class="section">
+<div id="included" class="section">
   <h2>What's Included &amp; What's Coming</h2>
   <div class="feature-grid">
     <div class="feature-col included">
@@ -1098,7 +1134,7 @@ body {
 </div>
 
 <!-- Section 6: What We Ask of You -->
-<div class="section">
+<div id="ask" class="section">
   <h2>What We Ask of You</h2>
   <p style="margin-bottom:16px;">This is a partnership &mdash; we're building this together. Here's the commitment:</p>
 
@@ -1131,7 +1167,7 @@ body {
 </div>
 
 <!-- Section 7: FAQ -->
-<div class="section">
+<div id="faq" class="section">
   <h2>Frequently Asked Questions</h2>
 
   <div class="faq-item">
@@ -1165,13 +1201,18 @@ body {
   </div>
 
   <div class="faq-item">
+    <div class="faq-q">Where are call recordings stored? Who can access them?</div>
+    <div class="faq-a">Recordings are stored securely on monday's infrastructure and are accessible only to members of your account. Your data is never shared with other accounts or used outside of your CRM. If you have specific compliance or data retention requirements, let us know and we'll address them.</div>
+  </div>
+
+  <div class="faq-item">
     <div class="faq-q">Do I need to install anything?</div>
     <div class="faq-a">Your reps need the monday mobile app on iOS. We'll walk you through number activation during a quick setup session &mdash; under 30 minutes.</div>
   </div>
 </div>
 
 <!-- Section 8: Next Steps -->
-<div class="section">
+<div id="next" class="section">
   <h2>Next Steps</h2>
   <div class="next-steps">
     <div class="next-step">
@@ -1198,7 +1239,7 @@ body {
 <!-- Footer -->
 <div class="footer">
   <button class="footer-contact" onclick="window.open('https://mail.google.com/mail/?view=cm&amp;to=talmo@monday.com&amp;su=monday+Smart+Call+Alpha+-+Question','_blank');">Questions? Email Tal Moneta</button>
-  <p style="margin-top:6px;font-size:13px;color:#6c757d;">Or email directly: <strong>talmo@monday.com</strong></p>
+  <p style="margin-top:6px;font-size:13px;color:#6c757d;">Or email directly: <a href="mailto:talmo@monday.com" style="color:var(--accent);font-weight:600;text-decoration:underline;">talmo@monday.com</a></p>
   <p>You're receiving this because you've joined the monday Smart Call alpha program.<br>Tal Moneta &mdash; Product Manager, monday.com</p>
 </div>
 
