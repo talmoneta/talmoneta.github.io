@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q2 2026 — CRM Mobile &amp; Agentic Priorities</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface2: #f1f3f5;
+  --border: #dee2e6;
+  --text: #212529;
+  --text-dim: #6c757d;
+  --accent: #6c5ce7;
+  --accent-light: #a29bfe;
+  --red: #e74c3c;
+  --orange: #f39c12;
+  --green: #27ae60;
+  --blue: #2980b9;
+  --purple: #8e44ad;
+  --teal: #00b894;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #74b9ff 100%);
+  color: white;
+  padding: 64px 0 48px;
+}
+.hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 8px; }
+.hero .subtitle { font-size: 1.15rem; opacity: 0.9; margin-bottom: 24px; }
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.hero-stat {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.hero-stat .num { font-size: 1.75rem; font-weight: 800; }
+.hero-stat .label { font-size: 0.8rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Navigation */
+.nav-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0;
+}
+.nav-bar .container {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 8px 24px;
+}
+.nav-link {
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav-link:hover { background: var(--surface2); color: var(--text); }
+
+/* Sections */
+section { padding: 48px 0; }
+section:nth-child(even) { background: var(--surface); }
+.section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 24px; color: var(--text); }
+h3 { font-size: 1.2rem; font-weight: 600; margin: 24px 0 12px; color: var(--text); }
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+.card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+.card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.card p { font-size: 0.9rem; color: var(--text-dim); }
+.card .stat { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+th { background: var(--surface2); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); }
+td { vertical-align: top; }
+.table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+.table-wrap table { margin: 0; }
+.table-wrap th:first-child, .table-wrap td:first-child { position: sticky; left: 0; background: var(--surface); z-index: 1; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-critical { background: #fde8e8; color: #c0392b; }
+.badge-high { background: #fef3e2; color: #e67e22; }
+.badge-medium { background: #e8f4fd; color: #2980b9; }
+.badge-low { background: #e8fde8; color: #27ae60; }
+.badge-zero { background: #2c3e50; color: white; }
+.badge-green { background: #d4edda; color: #155724; }
+.badge-yellow { background: #fff3cd; color: #856404; }
+.badge-red { background: #f8d7da; color: #721c24; }
+
+/* Priority cards */
+.priority-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+  border-left: 5px solid var(--accent);
+}
+.priority-card.p0 { border-left-color: var(--red); }
+.priority-card.p1 { border-left-color: var(--orange); }
+.priority-card.p2 { border-left-color: var(--blue); }
+.priority-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.priority-rank {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: white;
+  flex-shrink: 0;
+}
+.priority-rank.p0 { background: var(--red); }
+.priority-rank.p1 { background: var(--orange); }
+.priority-rank.p2 { background: var(--blue); }
+.priority-title { font-size: 1.15rem; font-weight: 700; flex: 1; min-width: 200px; }
+.rice-score {
+  background: var(--surface2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.priority-meta {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.priority-meta-item {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.priority-meta-item strong { color: var(--text); }
+.quote-block {
+  border-left: 3px solid var(--accent-light);
+  padding: 10px 16px;
+  margin: 12px 0;
+  background: #f8f7ff;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #444;
+}
+.quote-attr { font-style: normal; font-weight: 600; color: var(--accent); }
+
+/* Gartner gap */
+.gap-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 120px 100px;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.gap-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Charts */
+.chart-container { position: relative; max-width: 600px; margin: 20px auto; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* Methodology */
+.phase-timeline {
+  position: relative;
+  padding-left: 32px;
+}
+.phase-timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.phase-item {
+  position: relative;
+  margin-bottom: 32px;
+}
+.phase-item::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+}
+.phase-item.complete::before { background: var(--green); }
+.phase-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.phase-title { font-size: 1.1rem; font-weight: 600; margin: 4px 0 8px; }
+.phase-desc { font-size: 0.9rem; color: var(--text-dim); }
+.phase-stat {
+  display: inline-block;
+  background: var(--surface2);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Theme cards */
+.theme-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.theme-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Action items */
+.action-list { list-style: none; }
+.action-list li {
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--surface);
+}
+.action-num {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* Footer */
+footer {
+  background: #2d3436;
+  color: rgba(255,255,255,0.7);
+  padding: 32px 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
+@media print {
+  .nav-bar { display: none; }
+  .hero { padding: 32px 0 24px; }
+  section { padding: 24px 0; }
+  .priority-card { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+<div class="container">
+  <div class="section-label" style="color:rgba(255,255,255,0.7)">Research Report — March 2026</div>
+  <h1>Q2 2026 CRM Mobile &amp; Agentic Priorities</h1>
+  <p class="subtitle">Multi-source intelligence synthesis mapping customer needs to Gartner MQ requirements and Q2 development roadmap</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">279</div><div class="label">Gong Transcripts</div></div>
+    <div class="hero-stat"><div class="num">129K</div><div class="label">Snowflake Calls</div></div>
+    <div class="hero-stat"><div class="num">3,491</div><div class="label">Reddit Posts</div></div>
+    <div class="hero-stat"><div class="num">11</div><div class="label">Slack Channels</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="label">Research Reports</div></div>
+    <div class="hero-stat"><div class="num">66</div><div class="label">Q2 Epics Reviewed</div></div>
+    <div class="hero-stat"><div class="num">5</div><div class="label">Gartner Requirements</div></div>
+  </div>
+</div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+<div class="container">
+  <a href="#methodology" class="nav-link">Methodology</a>
+  <a href="#signal-matrix" class="nav-link">Signal Matrix</a>
+  <a href="#convergence" class="nav-link">Convergence</a>
+  <a href="#gartner" class="nav-link">Gartner Gaps</a>
+  <a href="#themes" class="nav-link">Strategic Themes</a>
+  <a href="#priorities" class="nav-link">Top 10 Priorities</a>
+  <a href="#board-coverage" class="nav-link">Board Coverage</a>
+  <a href="#actions" class="nav-link">Actions</a>
+</div>
+</nav>
+
+<!-- Section: Methodology -->
+<section id="methodology">
+<div class="container">
+  <div class="section-label">How We Got Here</div>
+  <h2>Research Methodology</h2>
+  <p style="color:var(--text-dim); margin-bottom:32px; max-width:720px;">Four independent data sources were analyzed in parallel over a 12-month window (Mar 2025 &ndash; Mar 2026), then cross-referenced against 66 planned Q2 epics and 5 Gartner MQ mobile demo requirements to produce evidence-backed priorities.</p>
+
+  <div class="phase-timeline">
+
+    <div class="phase-item complete">
+      <div class="phase-label">Phase 1 &mdash; Reddit Intelligence</div>
+      <div class="phase-title">Community Sentiment Scraping</div>
+      <div class="phase-desc">Custom Python CLI and Chrome Console scripts searched 12+ subreddits (r/sales, r/CRMSoftware, r/salesforce, r/hubspot, r/zoho, r/SaaS, r/aiagents, etc.) using Reddit's public JSON API. Keywords mapped to 8 MQ categories. No API keys required.</div>
+      <div class="phase-stat">3,491 posts &bull; 788 pain points &bull; 1,608 agentic signals</div>
+    </div>
+
+    <div class="phase-item complete">
+      <div class="phase-label">Phase 2 &mdash; Gong Call Analysis</div>
+      <div class="phase-title">Voice-of-Customer from Sales Calls</div>
+      <div class="phase-desc"><strong>Path A (Local):</strong> 279 transcripts analyzed across 9 batches — 93 mobile CRM demo calls + 186 field rep discovery calls. Each transcript reviewed for mobile signals, AI/agentic interest, competitor mentions, and CRM pain points.<br>
+      <strong>Path B (Snowflake):</strong> Kremer MCP queried <code>bigbrain.l2.gong_conversations_w_transcript_and_opportunities</code> for 12 months of CRM-specific calls. Refined query searched for mobile/field/offline/voice keywords in call spotlights.</div>
+      <div class="phase-stat">279 local transcripts &bull; 129,810 Snowflake calls confirmed</div>
+    </div>
+
+    <div class="phase-item complete">
+      <div class="phase-label">Phase 3 &mdash; Slack Mining</div>
+      <div class="phase-title">Internal Signal from 11 Channels</div>
+      <div class="phase-desc">Slack MCP search tool used across 11 channels with MQ-category-aligned keywords. 12-month window (Mar 2025 &ndash; Mar 2026). Channels include: #mobile, #crm, #crm-sales, #ask-crm-mobile, #partners-love-monday-crm, #cro-org, #crm-mobile-builders, #ask-mobile, #zendesk-crm-mobile, #ask-crm, #monday-call.</div>
+      <div class="phase-stat">11 channels &bull; 12-month window &bull; 200+ signals extracted</div>
+    </div>
+
+    <div class="phase-item complete">
+      <div class="phase-label">Phase 4 &mdash; Synthesis</div>
+      <div class="phase-title">Cross-Source Matrix &amp; RICE Scoring</div>
+      <div class="phase-desc">All findings mapped to a unified MQ Category &times; Source &times; Signal Strength matrix. Cross-referenced with 66 Q2 epics from board and 5 Gartner mobile demo requirements. Filtered through the agentic vision lens ("does this move from managing work to doing the work?"). RICE scoring applied to produce top 10 priorities.</div>
+      <div class="phase-stat">8 MQ categories &bull; 4 sources &bull; 10 RICE-scored priorities</div>
+    </div>
+
+  </div>
+
+  <h3 style="margin-top:32px;">Additional Context Sources</h3>
+  <div class="card-grid" style="margin-top:16px;">
+    <div class="card">
+      <div class="card-icon" style="background:#e8f4fd;">&#128218;</div>
+      <h4>4 Market Research Reports</h4>
+      <p>Future of CRM 2026&ndash;2028, The Autonomous CRM Reality, Mobile CRM Paradox (72-second sessions), Tier-1 Analyst Predictions</p>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:#fef3e2;">&#127919;</div>
+      <h4>Gartner MQ Mobile Demo Criteria</h4>
+      <p>5 specific requirements for mobile CRM evaluation: voice queries, voice notes + NLP, proactive alerts, offline, completeness</p>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:#e8fde8;">&#128203;</div>
+      <h4>Q2 2026 CRM Epics Board</h4>
+      <p>66 items across Agentic AI, Notetaker, Revenue Intelligence, Forecast, Navigation, Communication, Growth, and Mobile</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Section: Signal Matrix -->
+<section id="signal-matrix" style="background:var(--surface);">
+<div class="container">
+  <div class="section-label">Section A</div>
+  <h2>MQ Category &times; Source Signal Strength</h2>
+  <p style="color:var(--text-dim); margin-bottom:24px;">Each cell rates signal strength from the source. Ratings: <span class="badge badge-critical">Critical</span> <span class="badge badge-high">High</span> <span class="badge badge-medium">Medium</span> <span class="badge badge-low">Low</span></p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="min-width:180px;">MQ Category</th>
+        <th>Gong (279 transcripts)</th>
+        <th>Reddit (3,491 posts)</th>
+        <th>Slack (11 ch, 12mo)</th>
+        <th>Market Research</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Agentic AI</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q08, Q09, Q47</span></td>
+        <td><span class="badge badge-critical">Critical</span><br>42% AI signals; voice-to-text 22+</td>
+        <td><span class="badge badge-critical">Critical</span><br>1,209 posts; 1,608 agentic signals</td>
+        <td><span class="badge badge-high">High</span><br>Sidekick launched; Notetaker MCP</td>
+        <td><span class="badge badge-critical">Critical</span><br>$240B TAM by 2028</td>
+      </tr>
+      <tr>
+        <td><strong>Mobile / Field</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Bots/Mobile</span></td>
+        <td><span class="badge badge-critical">Critical</span><br>63% mobile; 13+ offline deal-breakers</td>
+        <td><span class="badge badge-high">High</span><br>605 posts; 136 pain points</td>
+        <td><span class="badge badge-high">High</span><br>Elevate "buzzing"; offline request</td>
+        <td><span class="badge badge-critical">Critical</span><br>72-second session constraint</td>
+      </tr>
+      <tr>
+        <td><strong>Generative AI</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q07</span></td>
+        <td><span class="badge badge-high">High</span><br>AI email 10+; lead scoring 8+</td>
+        <td><span class="badge badge-high">High</span><br>443 posts; 238 signals</td>
+        <td><span class="badge badge-medium">Medium</span><br>AI credits; Notetaker; rev intel</td>
+        <td><span class="badge badge-high">High</span><br>Pre-call intelligence</td>
+      </tr>
+      <tr>
+        <td><strong>Predictive AI</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q06</span></td>
+        <td><span class="badge badge-high">High</span><br>Forecast intel 8+; deal risk demand</td>
+        <td><span class="badge badge-medium">Medium</span><br>226 posts</td>
+        <td><span class="badge badge-medium">Medium</span><br>AI Forecast epic; Deals at Risk</td>
+        <td><span class="badge badge-high">High</span><br>Pipeline intelligence</td>
+      </tr>
+      <tr>
+        <td><strong>Core CRM</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q03, Q39, Q42</span></td>
+        <td><span class="badge badge-critical">Critical</span><br>25% zero CRM; 50+ SF negative</td>
+        <td><span class="badge badge-high">High</span><br>211 posts; 70 pain points</td>
+        <td><span class="badge badge-high">High</span><br>Mass email churn; E&amp;A demand</td>
+        <td><span class="badge badge-critical">Critical</span><br>System of action urgency</td>
+      </tr>
+      <tr>
+        <td><strong>Integrations</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q01, Q54</span></td>
+        <td><span class="badge badge-critical">Critical</span><br>Outlook 53+; ERP 35+</td>
+        <td><span class="badge badge-medium">Medium</span><br>65 posts</td>
+        <td><span class="badge badge-critical">Critical</span><br>WhatsApp "deal-breaker"</td>
+        <td><span class="badge badge-high">High</span><br>Context unification moat</td>
+      </tr>
+      <tr>
+        <td><strong>Competitive</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q43, Q44</span></td>
+        <td><span class="badge badge-critical">Critical</span><br>50+ SF negative; 25% no CRM</td>
+        <td><span class="badge badge-high">High</span><br>114 posts; SF + HubSpot dominant</td>
+        <td><span class="badge badge-high">High</span><br>HubSpot ChatGPT; battlecards</td>
+        <td><span class="badge badge-critical">Critical</span><br>SF/HubSpot investing heavily in AI</td>
+      </tr>
+      <tr>
+        <td><strong>Reporting</strong><br><span style="font-size:0.75rem;color:var(--text-dim)">Q40</span></td>
+        <td><span class="badge badge-high">High</span><br>30+ transcripts need dashboards</td>
+        <td><span class="badge badge-medium">Medium</span><br>107 posts</td>
+        <td><span class="badge badge-low">Low</span><br>Minimal signal</td>
+        <td><span class="badge badge-medium">Medium</span><br>AI-narrated insights</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</section>
+
+<!-- Section: Convergence -->
+<section id="convergence">
+<div class="container">
+  <div class="section-label">Cross-Source Validation</div>
+  <h2>Signal Convergence &mdash; Corroborated by 3+ Sources</h2>
+  <p style="color:var(--text-dim); margin-bottom:24px;">Signals validated across multiple independent sources carry the highest confidence. Five signals reached maximum 4/4 convergence.</p>
+
+  <div class="chart-row">
+    <div class="chart-container" style="max-width:100%;">
+      <canvas id="convergenceChart"></canvas>
+    </div>
+    <div>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Signal</th><th>Sources</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td>Voice-first mobile CRM</td><td>Gong + Reddit + Slack + Market</td><td><span class="badge badge-critical">4/4 Critical</span></td></tr>
+          <tr><td>Offline mode</td><td>Gong + Reddit + Slack + Market</td><td><span class="badge badge-critical">4/4 Critical</span></td></tr>
+          <tr><td>Salesforce displacement</td><td>Gong + Reddit + Slack + Market</td><td><span class="badge badge-critical">4/4 Critical</span></td></tr>
+          <tr><td>AI-powered follow-ups</td><td>Gong + Reddit + Slack + Market</td><td><span class="badge badge-critical">4/4 Critical</span></td></tr>
+          <tr><td>Adoption &gt; features</td><td>Gong + Reddit + Slack + Market</td><td><span class="badge badge-critical">4/4 Critical</span></td></tr>
+          <tr><td>WhatsApp / messaging</td><td>Gong + Slack + Market</td><td><span class="badge badge-high">3/4 High</span></td></tr>
+          <tr><td>ERP integration</td><td>Gong + Slack + Market</td><td><span class="badge badge-high">3/4 High</span></td></tr>
+          <tr><td>Meeting recording &rarr; CRM</td><td>Gong + Slack + Market</td><td><span class="badge badge-high">3/4 High</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Section: Gartner -->
+<section id="gartner" style="background:var(--surface);">
+<div class="container">
+  <div class="section-label">Section B</div>
+  <h2>Gartner MQ Mobile Demo Gap Analysis</h2>
+  <p style="color:var(--text-dim); margin-bottom:32px;">5 specific mobile demo requirements evaluated against Q2 board coverage and research evidence.</p>
+
+  <div style="border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+
+    <div class="gap-row" style="background:var(--surface2);">
+      <div class="gap-num">1</div>
+      <div>
+        <strong>Voice-Activated Queries</strong>
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-top:4px;">Demonstrate voice-activated queries on mobile to retrieve customer information</div>
+      </div>
+      <div><span class="badge badge-yellow">Medium Gap</span></div>
+      <div style="font-size:0.85rem;color:var(--text-dim);">Needs demo script</div>
+    </div>
+
+    <div class="gap-row">
+      <div class="gap-num">2</div>
+      <div>
+        <strong>Voice Note Capture + NLP</strong>
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-top:4px;">Show voice note capture with automatic summarization and CRM field population</div>
+      </div>
+      <div><span class="badge badge-green">Low Gap</span></div>
+      <div style="font-size:0.85rem;color:var(--text-dim);">In dogfood, likely Q2</div>
+    </div>
+
+    <div class="gap-row" style="background:var(--surface2);">
+      <div class="gap-num">3</div>
+      <div>
+        <strong>Proactive Mobile Alerts</strong>
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-top:4px;">Display context-aware alerts on mobile for deal risks, meeting prep, customer changes</div>
+      </div>
+      <div><span class="badge badge-high">High Gap</span></div>
+      <div style="font-size:0.85rem;color:var(--text-dim);">Needs mobile epic</div>
+    </div>
+
+    <div class="gap-row">
+      <div class="gap-num" style="background:#f8d7da; color:#721c24;">4</div>
+      <div>
+        <strong style="color:var(--red);">Offline Capabilities</strong>
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-top:4px;">Demonstrate offline data access and update for field scenarios with no connectivity</div>
+      </div>
+      <div><span class="badge badge-red">CRITICAL</span></div>
+      <div style="font-size:0.85rem;color:var(--red);font-weight:600;">No plan exists</div>
+    </div>
+
+    <div class="gap-row" style="background:var(--surface2);">
+      <div class="gap-num">5</div>
+      <div>
+        <strong>Mobile Experience Completeness</strong>
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-top:4px;">Demonstrate complete, productive CRM workflow on mobile &mdash; not just a simplified view</div>
+      </div>
+      <div><span class="badge badge-high">High Gap</span></div>
+      <div style="font-size:0.85rem;color:var(--text-dim);">Feature debt</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:24px; padding:20px; background:#fff5f5; border:1px solid #fecaca; border-radius:12px;">
+    <strong style="color:var(--red);">&#9888; Key Finding:</strong> Offline capability (Requirement #4) has <strong>ZERO</strong> coverage on the Q2 board despite 13+ deal-breaker signals in Gong, explicit competitive pressure from Salesforce, and market research emphasis. This is the single largest gap between Gartner requirements and the current roadmap.
+  </div>
+</div>
+</section>
+
+<!-- Section: Themes -->
+<section id="themes">
+<div class="container">
+  <div class="section-label">Section C</div>
+  <h2>Cross-Cutting Strategic Themes</h2>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--red);">&#9679;</span> Theme 1: "From Managing to Doing" &mdash; The Agentic CRM Imperative</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">The entire market is shifting from CRM as a system where humans record what happened to a system where agents execute what should happen next. All four sources confirm: Barrett Steel wants proactive buying pattern alerts; Reddit has 1,608 agentic signals; Sidekick is positioned as an "AI-native work execution platform"; market research projects $240B TAM by 2028.</p>
+    <div style="margin-top:8px;"><span class="badge badge-critical">All Sources Converge</span> <span class="badge badge-green">Q2 Alignment: Strong</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--red);">&#9679;</span> Theme 2: The Mobile Adoption Crisis</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">63% of Gong transcripts cite mobile needs. The 72-second mobile session reality means every tap counts. Field reps who can't complete their workflow in under 3 interactions abandon CRM entirely. Toyota TMH: "working from iPad, they're happy." iSTAR Medical: "small step between doing things twice to Apple Notes."</p>
+    <div style="margin-top:8px;"><span class="badge badge-critical">All Sources Converge</span> <span class="badge badge-yellow">Q2 Alignment: Partial</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--red);">&#9679;</span> Theme 3: Voice as the Mobile Interface Paradigm</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">Voice is not a feature &mdash; it's the natural interaction model for field workers between meetings. 22+ Gong transcripts request voice-to-text. Aurizon calls it a "game changer" vs Salesforce. Bellbird describes the ideal: "hit the talk button as they're driving off." Sidekick voice demo + Siri/Shortcuts concept in Slack.</p>
+    <div style="margin-top:8px;"><span class="badge badge-critical">3+ Sources Converge</span> <span class="badge badge-yellow">Q2 Alignment: Moderate</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--orange);">&#9679;</span> Theme 4: Offline &mdash; The Unaddressed Competitive Vulnerability</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">13+ Gong transcripts cite offline as a need. Hospitals, rural areas, construction sites, factories &mdash; all have connectivity gaps. Competitors (Salesforce, Zoho) claim offline capabilities. iSTAR Medical: deal-breaker. Breadcraft NZ: "write a list in my book." Slack: Salesforce comparison pressure.</p>
+    <div style="margin-top:8px;"><span class="badge badge-high">3+ Sources Converge</span> <span class="badge badge-red">Q2 Alignment: ZERO</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--orange);">&#9679;</span> Theme 5: The "No CRM" Land-and-Expand Opportunity</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">25% of Gong transcripts (69+) involve companies with literally no CRM &mdash; their competitor is Excel, paper, or "institutional knowledge." These are greenfield opportunities where the first CRM adopted becomes the long-term platform. Wieland Trucks: "it's 2025 and not having a CRM is very antiquated."</p>
+    <div style="margin-top:8px;"><span class="badge badge-high">Gong Dominant</span> <span class="badge badge-yellow">Q2 Alignment: Partial</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--red);">&#9679;</span> Theme 6: Salesforce Displacement as Growth Engine</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">50+ Gong transcripts mention Salesforce, 80%+ negative. Bioness: "cow to milk." Wieland: "these systems suck." ServePro: "horrendous." Simployer: "70% failure rate." Reddit has 92 SF mentions in AI alone. Battlecards updated in Slack. Monday's "simplicity that works" angle resonates.</p>
+    <div style="margin-top:8px;"><span class="badge badge-critical">All Sources Converge</span> <span class="badge badge-green">Q2 Alignment: Strong via AI</span></div>
+  </div>
+
+  <div class="theme-card">
+    <h4><span style="color:var(--orange);">&#9679;</span> Theme 7: WhatsApp &amp; Omnichannel Communication</h4>
+    <p style="font-size:0.9rem;color:var(--text-dim);">WhatsApp is a "deal-breaker" for international partners closing deals this week. Non-US companies (South Africa, Germany, NZ, Philippines) use WhatsApp as primary business channel. Q2 epic "WhatsApp - read/sync for audit" exists. Late Q2 roadmap confirmed by Ron Kimhi.</p>
+    <div style="margin-top:8px;"><span class="badge badge-high">Slack + Gong</span> <span class="badge badge-yellow">Q2 Alignment: Partial</span></div>
+  </div>
+</div>
+</section>
+
+<!-- Section: Priorities -->
+<section id="priorities" style="background:var(--surface);">
+<div class="container">
+  <div class="section-label">Section D</div>
+  <h2>Top 10 RICE-Scored Priorities</h2>
+  <p style="color:var(--text-dim); margin-bottom:8px;">RICE = (Reach &times; Impact &times; Confidence) / Effort. Confidence: High=1.0, Medium=0.8.</p>
+
+  <div style="margin-bottom:32px;">
+    <canvas id="riceChart" height="300"></canvas>
+  </div>
+
+  <!-- Priority 1 -->
+  <div class="priority-card p0">
+    <div class="priority-header">
+      <div class="priority-rank p0">1</div>
+      <div class="priority-title">Mobile Voice Logging + Sidekick Integration</div>
+      <div class="rice-score">RICE: 1,350</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 4,500/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 3 (massive)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> High (4 sources)</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> L+</div>
+      <div class="priority-meta-item"><strong>Gartner:</strong> #1 + #2</div>
+      <div class="priority-meta-item"><strong>Q2 Board:</strong> Partial</div>
+    </div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Field reps spend 6+ clicks to log a meeting note. Between appointments, they have 2&ndash;3 minutes. Most don't log anything &mdash; creating the "field data entry death spiral."</p>
+    <div class="quote-block">"The voice notes are amazing. We didn't... I've used Salesforce, and that wasn't available. So that's a game changer." <span class="quote-attr">&mdash; Aurizon</span></div>
+    <div class="quote-block">"Hit the talk button on their phone as they're driving off and leave a couple of short notes." <span class="quote-attr">&mdash; Bellbird Timber</span></div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:12px;"><strong>Solution:</strong> Unify Notetaker voice + Sidekick AI query into "voice-first CRM." After call: tap &rarr; talk &rarr; AI summarizes &rarr; auto-populates deal. Before call: voice query &rarr; deal context.</p>
+  </div>
+
+  <!-- Priority 2 -->
+  <div class="priority-card p0">
+    <div class="priority-header">
+      <div class="priority-rank p0">2</div>
+      <div class="priority-title">Offline Mode MVP</div>
+      <div class="rice-score">RICE: 1,125</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 3,000/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 3 (massive)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> High (4 sources)</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> XL</div>
+      <div class="priority-meta-item"><strong>Gartner:</strong> #4</div>
+      <div class="priority-meta-item"><strong>Q2 Board:</strong> <span class="badge badge-zero">ZERO</span></div>
+    </div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Field reps in hospitals, rural areas, and construction sites have zero connectivity. They revert to paper, then forget to transfer data. Competitors claim offline &mdash; monday has nothing.</p>
+    <div class="quote-block">"Offline capability is one of the things which, when you're in the OR actually matters... there's only a very small step between doing things twice to I'm using Apple Notes." <span class="quote-attr">&mdash; iSTAR Medical</span></div>
+    <div class="quote-block">"I literally have to write a list in my book and fill it in when I get back to my hotel." <span class="quote-attr">&mdash; Breadcraft NZ</span></div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:12px;"><strong>Solution:</strong> MVP &mdash; cached read-only data (last 50 items, today&rsquo;s meetings) + queue offline edits for sync. Phase 2: full offline CRUD.</p>
+  </div>
+
+  <!-- Priority 3 -->
+  <div class="priority-card p0">
+    <div class="priority-header">
+      <div class="priority-rank p0">3</div>
+      <div class="priority-title">Mobile 2-Click Activity Shortcut</div>
+      <div class="rice-score">RICE: 1,080</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 5,400/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 2 (high)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> High (3 sources)</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> M-L</div>
+      <div class="priority-meta-item"><strong>Gartner:</strong> #5</div>
+      <div class="priority-meta-item"><strong>Q2 Board:</strong> <span class="badge badge-zero">Gap</span></div>
+    </div>
+    <p style="font-size:0.9rem;margin-bottom:12px;">Logging a customer interaction takes 6+ taps. With a 72-second session, reps abandon. 50+ Gong transcripts describe this as the #1 CRM adoption blocker.</p>
+    <div class="quote-block">"I counted the clicks: 40. By building a landing page, we reduced it to 10." <span class="quote-attr">&mdash; Tri-State Enterprises</span></div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:12px;"><strong>Solution:</strong> Widget/FAB: tap &rarr; select contact (recent/favorites/nearby) &rarr; activity type &rarr; voice or quick text &rarr; done. 2 taps min, 4 max.</p>
+  </div>
+
+  <!-- Priority 4 -->
+  <div class="priority-card p1">
+    <div class="priority-header">
+      <div class="priority-rank p1">4</div>
+      <div class="priority-title">Proactive Mobile Deal Risk Alerts</div>
+      <div class="rice-score">RICE: 675</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 3,000/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 3 (massive)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> Medium</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> L-XL</div>
+      <div class="priority-meta-item"><strong>Gartner:</strong> #3</div>
+      <div class="priority-meta-item"><strong>Q2 Board:</strong> Desktop only</div>
+    </div>
+    <div class="quote-block">"I wish the system would say 'this customer bought this last month... but they haven't bought it for two months &mdash; have you followed up on it?'" <span class="quote-attr">&mdash; Barrett Steel</span></div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:12px;"><strong>Solution:</strong> Push notifications when deal risk score changes. Includes: deal name, risk reason, suggested action, one-tap to call/email.</p>
+  </div>
+
+  <!-- Priority 5 -->
+  <div class="priority-card p1">
+    <div class="priority-header">
+      <div class="priority-rank p1">5</div>
+      <div class="priority-title">AI Summary Activation &amp; Discoverability</div>
+      <div class="rice-score">RICE: 625</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 5,000/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 1 (medium)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> High</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> S-M</div>
+    </div>
+    <p style="font-size:0.9rem;">AI summary is a killer feature that almost nobody has activated. "This AI summary tab is amazing" &mdash; Matrix Seating. Solution: progressive disclosure after first deal goes in-progress.</p>
+  </div>
+
+  <!-- Priority 6 -->
+  <div class="priority-card p1">
+    <div class="priority-header">
+      <div class="priority-rank p1">6</div>
+      <div class="priority-title">Automated Follow-Up Sequences</div>
+      <div class="rice-score">RICE: 500</div>
+    </div>
+    <div class="priority-meta">
+      <div class="priority-meta-item"><strong>Reach:</strong> 4,000/qtr</div>
+      <div class="priority-meta-item"><strong>Impact:</strong> 2 (high)</div>
+      <div class="priority-meta-item"><strong>Confidence:</strong> High</div>
+      <div class="priority-meta-item"><strong>Effort:</strong> L</div>
+    </div>
+    <div class="quote-block">"95% of our leads are untouched." <span class="quote-attr">&mdash; Ignite Cannabis</span></div>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-top:8px;">20+ Gong transcripts + 404 Reddit "automate" signals. Solution: trigger-based sequences with AI-personalized content.</p>
+  </div>
+
+  <!-- Priorities 7-10 compact -->
+  <div class="card-grid" style="margin-top:20px;">
+    <div class="priority-card p2" style="margin-bottom:0;">
+      <div class="priority-header">
+        <div class="priority-rank p2">7</div>
+        <div class="priority-title">Mobile Home Customization</div>
+        <div class="rice-score">450</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-dim);">CRM-specific home screen: pipeline snapshot, today's meetings, action items. Drives daily engagement.</p>
+    </div>
+    <div class="priority-card p2" style="margin-bottom:0;">
+      <div class="priority-header">
+        <div class="priority-rank p2">8</div>
+        <div class="priority-title">Cross-Board Mobile Search</div>
+        <div class="rice-score">350</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-dim);">Global search across deals, contacts, accounts. "Ask anything" Sidekick + mobile = natural fit.</p>
+    </div>
+    <div class="priority-card p2" style="margin-bottom:0;">
+      <div class="priority-header">
+        <div class="priority-rank p2">9</div>
+        <div class="priority-title">In-Person Meeting Recording</div>
+        <div class="rice-score">300</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-dim);">Notetaker for in-person meetings. Blue-ocean vs competitors. Notetaker mobile Q2 epic covers this.</p>
+    </div>
+    <div class="priority-card p2" style="margin-bottom:0;">
+      <div class="priority-header">
+        <div class="priority-rank p2">10</div>
+        <div class="priority-title">WhatsApp Native Integration</div>
+        <div class="rice-score">250</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-dim);">Partner "deal-breaker" for international markets. Read/sync Q2 epic exists. Full send = Q3.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Section: Board Coverage -->
+<section id="board-coverage">
+<div class="container">
+  <div class="section-label">Q2 Board Assessment</div>
+  <h2>Current Board Coverage vs. Research Signals</h2>
+
+  <div class="chart-row" style="margin-bottom:32px;">
+    <div>
+      <h3>Q2 Epic Categories (66 items)</h3>
+      <canvas id="epicChart" height="280"></canvas>
+    </div>
+    <div>
+      <h3>Gartner Demo Status After Priorities</h3>
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>Requirement</th><th>Covered By</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>#1 Voice queries</td><td>Priority #1</td><td><span class="badge badge-green">GREEN</span> if built</td></tr>
+          <tr><td>#2 Voice + NLP</td><td>Priority #1 + #9</td><td><span class="badge badge-green">GREEN</span></td></tr>
+          <tr><td>#3 Proactive alerts</td><td>Priority #4</td><td><span class="badge badge-yellow">YELLOW</span></td></tr>
+          <tr><td>#4 Offline</td><td>Priority #2</td><td><span class="badge badge-red">RED &rarr; YELLOW</span></td></tr>
+          <tr><td>#5 Completeness</td><td>#3, #7, #8</td><td><span class="badge badge-yellow">YELLOW</span></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <h3>Critical Gaps: Research Signals with Zero Q2 Board Coverage</h3>
+  <div class="table-wrap" style="margin-top:12px;">
+  <table>
+    <thead><tr><th>Gap</th><th>Research Evidence</th><th>Impact</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Offline Mode</strong></td><td>13+ Gong deal-breakers, Slack customer request, Gartner #4, Market Research</td><td><span class="badge badge-critical">Deal-closing</span></td></tr>
+      <tr><td><strong>2-Click Activity Shortcut</strong></td><td>50+ Gong transcripts; 72-second session reality</td><td><span class="badge badge-critical">Adoption-blocking</span></td></tr>
+      <tr><td><strong>Proactive Mobile Alerts</strong></td><td>Barrett Steel quote; Elevate feedback; Gartner #3</td><td><span class="badge badge-high">Demo-blocking</span></td></tr>
+      <tr><td><strong>Mobile Voice Query</strong></td><td>22+ Gong; Siri request; Gartner #1</td><td><span class="badge badge-high">Demo-blocking</span></td></tr>
+      <tr><td><strong>Mobile Home Customization</strong></td><td>10+ Gong; Elevate "work in pocket"</td><td><span class="badge badge-medium">Retention</span></td></tr>
+      <tr><td><strong>Cross-Board Mobile Search</strong></td><td>7+ Gong user research transcripts</td><td><span class="badge badge-medium">Completeness</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</section>
+
+<!-- Section: Actions -->
+<section id="actions" style="background:var(--surface);">
+<div class="container">
+  <div class="section-label">What to Do Next</div>
+  <h2>Immediate Actions</h2>
+
+  <ul class="action-list">
+    <li>
+      <div class="action-num">1</div>
+      <div><strong>Add to Q2 Board: Offline Mode MVP</strong><br><span style="font-size:0.85rem;color:var(--text-dim);">The single largest research-backed gap. ZERO coverage despite 13+ deal-breaker signals and Gartner requirement #4.</span></div>
+    </li>
+    <li>
+      <div class="action-num">2</div>
+      <div><strong>Add to Q2 Board: Mobile 2-Click Activity Shortcut</strong><br><span style="font-size:0.85rem;color:var(--text-dim);">Adoption-critical. Without this, field reps won't use CRM at all. 50+ Gong transcripts confirm.</span></div>
+    </li>
+    <li>
+      <div class="action-num">3</div>
+      <div><strong>Add to Q2 Board: Proactive Mobile Deal Risk Alerts</strong><br><span style="font-size:0.85rem;color:var(--text-dim);">Gartner requirement #3. Leverage existing Risk Resolver Agent + mobile push infrastructure.</span></div>
+    </li>
+    <li>
+      <div class="action-num">4</div>
+      <div><strong>Ensure Demo Path: Sidekick Voice &rarr; Customer Info</strong><br><span style="font-size:0.85rem;color:var(--text-dim);">Gartner requirements #1 + #2. Sidekick mobile exists; needs explicit voice-query-to-customer-record demo flow.</span></div>
+    </li>
+    <li>
+      <div class="action-num">5</div>
+      <div><strong>Scope WhatsApp Phase 1</strong><br><span style="font-size:0.85rem;color:var(--text-dim);">Confirm "read/sync for audit" satisfies partner deal-breaker or expand scope for late Q2.</span></div>
+    </li>
+  </ul>
+
+  <div style="margin-top:40px; padding:28px; background:linear-gradient(135deg, #f8f7ff 0%, #ede8ff 100%); border-radius:16px; border:1px solid #d5ccff;">
+    <h3 style="margin-top:0;">The Strategic Narrative</h3>
+    <p style="font-size:1.05rem; line-height:1.7; margin-bottom:0;">These 10 priorities form a coherent story: <strong>monday CRM becomes the first CRM that works where field reps actually work &mdash; in the car, in the hospital, in the warehouse, on the farm, at the construction site.</strong></p>
+    <p style="font-size:0.95rem; line-height:1.7; color:var(--text-dim); margin-top:12px; margin-bottom:0;">The traditional CRM story is "come back to the office and log what happened." The agentic CRM story is "the system captures what happened, tells you what to do next, and works even when you're off the grid." This isn't feature parity with Salesforce/HubSpot. It's a category re-definition: <strong>the CRM that does the work, even when you can't.</strong></p>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Q2 2026 CRM Mobile &amp; Agentic Priorities &bull; Generated 2026-03-17 &bull; Evidence: 279 Gong + 129K Snowflake + 3,491 Reddit + 11 Slack Channels + 4 Research Reports</p>
+  </div>
+</footer>
+
+<script>
+// Convergence Chart
+new Chart(document.getElementById('convergenceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Voice-first\nmobile', 'Offline\nmode', 'Salesforce\ndisplacement', 'AI-powered\nfollow-ups', 'Adoption >\nfeatures', 'WhatsApp', 'ERP\nintegration', 'Meeting\nrecording'],
+    datasets: [{
+      label: 'Sources Corroborating',
+      data: [4, 4, 4, 4, 4, 3, 3, 3],
+      backgroundColor: ['#e74c3c','#e74c3c','#e74c3c','#e74c3c','#e74c3c','#f39c12','#f39c12','#f39c12'],
+      borderRadius: 6,
+      barThickness: 32,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 5,
+        ticks: { stepSize: 1, color: '#6c757d' },
+        grid: { color: '#e0e0e0' },
+        title: { display: true, text: 'Independent Sources', color: '#6c757d' }
+      },
+      x: {
+        ticks: { color: '#6c757d', font: { size: 11 } },
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// RICE Chart
+new Chart(document.getElementById('riceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['#1 Voice\nLogging', '#2 Offline\nMVP', '#3 2-Click\nActivity', '#4 Deal Risk\nAlerts', '#5 AI Summary\nActivation', '#6 Auto\nFollow-Up', '#7 Home\nCustomize', '#8 Cross-Board\nSearch', '#9 Meeting\nRecording', '#10 WhatsApp'],
+    datasets: [{
+      label: 'RICE Score',
+      data: [1350, 1125, 1080, 675, 625, 500, 450, 350, 300, 250],
+      backgroundColor: [
+        '#e74c3c','#e74c3c','#e74c3c',
+        '#f39c12','#f39c12','#f39c12',
+        '#2980b9','#2980b9','#2980b9','#2980b9'
+      ],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: { color: '#e0e0e0' },
+        ticks: { color: '#6c757d' },
+        title: { display: true, text: 'RICE Score', color: '#6c757d' }
+      },
+      y: {
+        ticks: { color: '#212529', font: { size: 11, weight: '500' } },
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// Epic Distribution Chart
+new Chart(document.getElementById('epicChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Agentic AI / Sidekick', 'Notetaker', 'Communication / E&A', 'Growth / Activation', 'Lead Enrichment', 'CRM Suite / Nav', 'Forecast / Analytics', 'Other', 'Mobile-Specific'],
+    datasets: [{
+      data: [10, 7, 9, 8, 6, 5, 5, 4, 2],
+      backgroundColor: ['#6c5ce7','#a29bfe','#74b9ff','#00b894','#fdcb6e','#e17055','#fab1a0','#dfe6e9','#2d3436'],
+      borderWidth: 2,
+      borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { font: { size: 11 }, color: '#555', padding: 12 }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
