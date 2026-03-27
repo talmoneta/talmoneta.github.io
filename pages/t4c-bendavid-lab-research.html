@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech for Cancer — Ben-David Lab Research & Plan</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f7f8fa;
+    --bg-card: #ffffff;
+    --text: #1a1a2e;
+    --text-secondary: #5a5a7a;
+    --text-light: #8888a4;
+    --accent: #0d7377;
+    --accent-light: #14a3a8;
+    --accent-bg: #e8f6f6;
+    --border: #e4e6ec;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 20px rgba(0,0,0,0.08);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --persona-exp: #e07c4f;
+    --persona-hybrid: #7c6dd8;
+    --persona-comp: #3a8fd4;
+    --persona-infra: #2ea87e;
+    --pain-high: #d94f4f;
+    --pain-med: #d4993a;
+    --pain-struct: #7c7c9a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Navigation ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nav .logo {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  nav .logo span { color: var(--text-light); font-weight: 400; }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 0.25rem;
+  }
+  nav ul li a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  nav ul li a:hover {
+    color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  /* ─── Sections ─── */
+  section {
+    padding: 5rem 2rem;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  section:first-of-type { padding-top: 8rem; }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  h2 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 650;
+    margin-bottom: 0.35rem;
+  }
+  p { margin-bottom: 1rem; }
+  p.lead {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 680px;
+  }
+  p.lead-wide { max-width: 800px; }
+
+  /* ─── Hero ─── */
+  .hero {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 3rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+  }
+  .hero h1 { max-width: 720px; }
+  .hero p.lead { margin-bottom: 2rem; }
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 1rem;
+  }
+  .hero-stat .number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+  }
+  .hero-stat .label {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* ─── Cards ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); }
+  .card .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .card p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* ─── Science Section ─── */
+  .science-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .science-step {
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.5rem;
+    position: relative;
+  }
+  .science-step .step-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-bg);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+  .science-step h4 { color: var(--text); }
+  .science-step p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* ─── Persona Cards ─── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .persona-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .persona-card:hover { box-shadow: var(--shadow-lg); }
+  .persona-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .persona-card.exp::before { background: var(--persona-exp); }
+  .persona-card.hybrid::before { background: var(--persona-hybrid); }
+  .persona-card.comp::before { background: var(--persona-comp); }
+  .persona-card.infra::before { background: var(--persona-infra); }
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .persona-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: white;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .persona-card.exp .persona-avatar { background: var(--persona-exp); }
+  .persona-card.hybrid .persona-avatar { background: var(--persona-hybrid); }
+  .persona-card.comp .persona-avatar { background: var(--persona-comp); }
+  .persona-card.infra .persona-avatar { background: var(--persona-infra); }
+  .persona-meta {
+    display: flex;
+    flex-direction: column;
+  }
+  .persona-meta .name { font-weight: 650; font-size: 0.95rem; }
+  .persona-meta .count { font-size: 0.78rem; color: var(--text-light); }
+  .persona-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .persona-detail {
+    font-size: 0.82rem;
+  }
+  .persona-detail .detail-label {
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 0.15rem;
+  }
+  .persona-detail .detail-value {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ─── Data Flow ─── */
+  .flow-container {
+    margin-top: 2rem;
+  }
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 1.5rem;
+  }
+  .flow-node {
+    flex: 1;
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    position: relative;
+    min-height: 100px;
+  }
+  .flow-node h4 {
+    font-size: 0.82rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .flow-node p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    flex-shrink: 0;
+    color: var(--text-light);
+    font-size: 1.1rem;
+  }
+
+  /* ─── Storage Grid ─── */
+  .storage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .storage-item {
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+  }
+  .storage-item .s-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .storage-item h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+  .storage-item p {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-bottom: 0;
+  }
+  .storage-item .s-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 100px;
+    margin-top: 0.5rem;
+  }
+  .s-tag.no-backup { background: #fde8e8; color: #c53030; }
+  .s-tag.partial { background: #fef3c7; color: #92400e; }
+  .s-tag.backed { background: #d1fae5; color: #065f46; }
+
+  /* ─── Pain Points ─── */
+  .pain-list {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pain-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: box-shadow 0.2s;
+  }
+  .pain-item:hover { box-shadow: var(--shadow); }
+  .pain-rank {
+    font-size: 0.75rem;
+    font-weight: 800;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .pain-rank.high { background: #fde8e8; color: var(--pain-high); }
+  .pain-rank.med { background: #fef3c7; color: var(--pain-med); }
+  .pain-rank.struct { background: #eee; color: var(--pain-struct); }
+  .pain-content h4 { font-size: 0.9rem; }
+  .pain-content p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+  .pain-content .quote {
+    font-style: italic;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--border);
+  }
+
+  /* ─── Roadmap ─── */
+  .roadmap {
+    margin-top: 2.5rem;
+    position: relative;
+  }
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .phase {
+    position: relative;
+    padding-left: 60px;
+    padding-bottom: 3rem;
+  }
+  .phase:last-child { padding-bottom: 0; }
+  .phase-dot {
+    position: absolute;
+    left: 12px;
+    top: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .phase-dot.future {
+    background: white;
+    border: 3px solid var(--border);
+    box-shadow: 0 0 0 2px var(--border);
+  }
+  .phase-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .phase h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+  .phase > p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    max-width: 600px;
+  }
+  .phase-deliverables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .deliverable-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  /* ─── AI Vision ─── */
+  .vision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .vision-card {
+    background: linear-gradient(135deg, var(--accent-bg) 0%, #f0f4ff 100%);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    border: 1px solid rgba(13,115,119,0.1);
+  }
+  .vision-card .v-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .vision-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  .vision-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  /* ─── Glossary ─── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 2rem;
+    margin-top: 1.5rem;
+  }
+  .glossary-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .glossary-term {
+    font-weight: 650;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+  .glossary-def {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-top: 0.1rem;
+  }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+  .cta-section h2 { margin-bottom: 0.75rem; }
+  .cta-section p {
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+  }
+
+  /* ─── Footer ─── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.4rem; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    .science-visual { grid-template-columns: 1fr; }
+    .persona-grid { grid-template-columns: 1fr; }
+    .persona-details { grid-template-columns: 1fr; }
+    .storage-grid { grid-template-columns: 1fr; }
+    .flow-row { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); width: auto; height: 28px; }
+    .vision-grid { grid-template-columns: 1fr; }
+    .glossary-grid { grid-template-columns: 1fr; }
+    section { padding: 3rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav>
+  <div class="logo">T4C <span>/ Ben-David Lab</span></div>
+  <ul>
+    <li><a href="#science">The Science</a></li>
+    <li><a href="#people">People</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#problems">Problems</a></li>
+    <li><a href="#plan">The Plan</a></li>
+    <li><a href="#vision">AI Vision</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero" id="top">
+  <div class="hero-badge">Tech for Cancer &times; Tel Aviv University</div>
+  <h1>Making Cancer Research Faster Through Better Data</h1>
+  <p class="lead">
+    The Ben-David Lab does world-class cancer research. But like most academic labs, their data is scattered across hard drives, personal folders, and ad-hoc tools. We're here to change that -- one small, visible step at a time.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="number">~18</div>
+      <div class="label">Lab members</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">6+</div>
+      <div class="label">Data storage locations</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">0</div>
+      <div class="label">Shared data catalogs</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">500GB</div>
+      <div class="label">Per microscopy run</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── The Science ─── -->
+<section id="science">
+  <div class="section-label">The Science</div>
+  <h2>What the Lab Actually Does</h2>
+  <p class="lead lead-wide">
+    Every cell in your body has 46 chromosomes -- 23 pairs. Cancer cells almost always have the wrong number: extra copies of some, missing copies of others. This is called <strong>aneuploidy</strong>, and it's one of the defining features of cancer. Uri Ben-David's lab studies how to turn this abnormality into a weapon against the disease.
+  </p>
+
+  <div class="science-visual">
+    <div class="science-step">
+      <div class="step-num">1</div>
+      <h4>Discover the Pattern</h4>
+      <p>Find which chromosomal changes appear in specific cancer types. Is chromosome 8 always gained in this tumor? Is chromosome 10 always lost? Map the landscape of chromosomal chaos.</p>
+    </div>
+    <div class="science-step">
+      <div class="step-num">2</div>
+      <h4>Understand the Mechanism</h4>
+      <p>Figure out <em>why</em> cancer cells keep these changes. Do extra copies of a chromosome give the tumor an advantage? Do they carry genes the cancer depends on for survival?</p>
+    </div>
+    <div class="science-step">
+      <div class="step-num">3</div>
+      <h4>Exploit the Vulnerability</h4>
+      <p>If cancer cells <em>depend</em> on having extra chromosomes, then targeting those extras could kill the cancer while leaving normal cells (with the right number) unharmed. This is the therapeutic opportunity.</p>
+    </div>
+  </div>
+
+  <div class="card-grid" style="margin-top: 2.5rem;">
+    <div class="card">
+      <div class="icon" style="background: #eef4ff; color: #3a8fd4;">W</div>
+      <h3>Wet Lab (Experimental)</h3>
+      <p>Growing cancer cell lines, working with mouse models, obtaining patient tumor samples from hospitals, running microscopy, performing DNA/RNA sequencing. Hands-on work with biological materials.</p>
+    </div>
+    <div class="card">
+      <div class="icon" style="background: #f0e8ff; color: #7c6dd8;">D</div>
+      <h3>Dry Lab (Computational)</h3>
+      <p>Analyzing sequencing data with bioinformatics pipelines, statistical modeling, machine learning, mining public genomic databases. Turning raw data into scientific insight.</p>
+    </div>
+    <div class="card">
+      <div class="icon" style="background: #e8f6f0; color: #2ea87e;">T</div>
+      <h3>Translation to Clinic</h3>
+      <p>Several lab discoveries are already being tested in clinical settings: improved diagnostics, new drug targets, and better understanding of how tumors resist treatment.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── The People ─── -->
+<section id="people">
+  <div class="section-label">The People</div>
+  <h2>Four Types of Lab Members</h2>
+  <p class="lead">
+    The lab spans the full spectrum from biologists who never touch code to computer scientists who never touch a pipette. Understanding these personas is key to designing solutions that actually get adopted.
+  </p>
+
+  <div class="persona-grid">
+    <!-- Experimentalists -->
+    <div class="persona-card exp">
+      <div class="persona-header">
+        <div class="persona-avatar">E</div>
+        <div class="persona-meta">
+          <span class="name">Pure Experimentalists</span>
+          <span class="count">3 people -- 100% bench work</span>
+        </div>
+      </div>
+      <div class="persona-details">
+        <div class="persona-detail">
+          <div class="detail-label">Skills</div>
+          <div class="detail-value">Biology, basic statistics, Excel. May use ChatGPT for simple R scripts.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Tools</div>
+          <div class="detail-value">Microscope software, Excel, built-in instrument analysis tools.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Key Pain</div>
+          <div class="detail-value">Depend on Haia for any computational analysis. No way to self-serve.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Change Attitude</div>
+          <div class="detail-value">Resistant. "This is my thesis, I do it my way." Some are strongly anti-tech.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hybrid -->
+    <div class="persona-card hybrid">
+      <div class="persona-header">
+        <div class="persona-avatar">H</div>
+        <div class="persona-meta">
+          <span class="name">Hybrid Researchers</span>
+          <span class="count">2-3 people -- 50/50 wet + dry</span>
+        </div>
+      </div>
+      <div class="persona-details">
+        <div class="persona-detail">
+          <div class="detail-label">Skills</div>
+          <div class="detail-value">Biology + basic R/Python. Can understand and adapt scripts. Tech-curious by personality.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Tools</div>
+          <div class="detail-value">RStudio, some Python, Excel. Open to trying new tools and approaches.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Key Pain</div>
+          <div class="detail-value">No standard environments. Exploratory analysis is slow without good infrastructure.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Change Attitude</div>
+          <div class="detail-value">Most likely early adopters. They see the value and want better tools.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Computational -->
+    <div class="persona-card comp">
+      <div class="persona-header">
+        <div class="persona-avatar">C</div>
+        <div class="persona-meta">
+          <span class="name">Computational Students</span>
+          <span class="count">2-3 people + 1 undergrad -- 100% dry</span>
+        </div>
+      </div>
+      <div class="persona-details">
+        <div class="persona-detail">
+          <div class="detail-label">Skills</div>
+          <div class="detail-value">Python, R, Bash. Comfortable with servers, command line, and bioinformatics pipelines.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Tools</div>
+          <div class="detail-value">Local editors, RStudio, remote server (some). GitHub (just starting).</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Key Pain</div>
+          <div class="detail-value">Each builds their environment from scratch. Duplicated reference data. No version control culture.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Change Attitude</div>
+          <div class="detail-value">Technically capable but fiercely independent. "This is my code, my approach."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="persona-card infra">
+      <div class="persona-header">
+        <div class="persona-avatar">I</div>
+        <div class="persona-meta">
+          <span class="name">Infrastructure Staff</span>
+          <span class="count">2 people -- Haia (bioinformatics) + Yael (lab ops)</span>
+        </div>
+      </div>
+      <div class="persona-details">
+        <div class="persona-detail">
+          <div class="detail-label">Skills</div>
+          <div class="detail-value">Haia: pipelines, Bash/Python/R, server admin. Yael: protocols, inventory, project coordination.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Tools</div>
+          <div class="detail-value">Haia: remote server, MobaXterm, GitHub. Yael: Google Docs, physical systems.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Key Pain</div>
+          <div class="detail-value">Both are bottlenecks. Every request flows through them. Constant context-switching.</div>
+        </div>
+        <div class="persona-detail">
+          <div class="detail-label">Change Attitude</div>
+          <div class="detail-value">Champions. Already pushing for improvements (workshops, GitHub adoption, AWS archive).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── Data Landscape ─── -->
+<section id="data">
+  <div class="section-label">The Data</div>
+  <h2>How Data Flows Through the Lab</h2>
+  <p class="lead lead-wide">
+    The lab generates and consumes multiple types of data from multiple sources. Understanding this flow is the first step to organizing it.
+  </p>
+
+  <h3 style="margin-top: 2.5rem; margin-bottom: 1rem;">The Research Data Pipeline</h3>
+  <div class="flow-container">
+    <div class="flow-row">
+      <div class="flow-node">
+        <h4>Data Sources</h4>
+        <p><strong>Open-source databases</strong> (public genomic repositories like GEO, TCGA) -- always re-downloadable.<br><br>
+        <strong>Collaboration data</strong> from hospitals and other labs -- under NDA, must be stored securely.<br><br>
+        <strong>Self-generated</strong> from lab experiments -- sequencing sent to external facility, returns as FASTQ files.</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <h4>Processing</h4>
+        <p><strong>Sequencing:</strong> Raw FASTQ files are aligned to a reference genome, quality-checked, then analyzed (copy number calls, gene expression, variant detection).<br><br>
+        <strong>Imaging:</strong> Microscopy images (~500GB/run) are annotated and quantified -- currently by hand for some instruments.</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-node">
+        <h4>Analysis &amp; Output</h4>
+        <p>Statistical analysis, visualization, interpretation. Results go into paper drafts.<br><br>
+        On publication: data deposited to public repository (gets a unique ID). Pre-publication data has <strong>no standard backup strategy</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 2.5rem; margin-bottom: 0.5rem;">What Sequencing Data Looks Like</h3>
+  <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 680px;">For non-biologists: sequencing data arrives as FASTQ files. Each DNA/RNA fragment is stored as 4 lines of text -- an identifier, the actual sequence (letters A, T, C, G), a separator, and quality scores. A single sample can produce millions of fragments, resulting in files of several gigabytes.</p>
+
+  <div style="background: var(--bg-alt); border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin-top: 1rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.78rem; line-height: 1.7; color: var(--text-secondary); overflow-x: auto;">
+    <span style="color: var(--text-light);">Line 1 (ID):</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@SEQ_ID_SAMPLE_001/1<br>
+    <span style="color: var(--accent);">Line 2 (Sequence):</span> GATTTGGGGTTCAAAGCAGTATCGATCAAA<br>
+    <span style="color: var(--text-light);">Line 3 (Separator):</span> +<br>
+    <span style="color: var(--persona-hybrid);">Line 4 (Quality):</span>&nbsp; !''*((((***+))%%%++)(%%%%).1***
+  </div>
+
+  <h3 style="margin-top: 3rem; margin-bottom: 0.5rem;">Where Data Lives Today</h3>
+  <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0;">Data is scattered across 6+ locations with no central index. Some is backed up. Much is not.</p>
+
+  <div class="storage-grid">
+    <div class="storage-item">
+      <div class="s-icon">&#128190;</div>
+      <h4>External Hard Drives</h4>
+      <p>15+ drives. Some personal, some shared. Primary "backup" method. During wartime, drives were split across different homes.</p>
+      <span class="s-tag no-backup">No systematic backup</span>
+    </div>
+    <div class="storage-item">
+      <div class="s-icon">&#128187;</div>
+      <h4>OneDrive (University)</h4>
+      <p>~5TB per student via university email. Most students default to this for scripts, data, and results.</p>
+      <span class="s-tag no-backup">No formal backup</span>
+    </div>
+    <div class="storage-item">
+      <div class="s-icon">&#128421;</div>
+      <h4>Lab Server</h4>
+      <p>University-maintained shared folder. Each student has a directory. Not a computational server -- just storage.</p>
+      <span class="s-tag partial">University backup (monthly)</span>
+    </div>
+    <div class="storage-item">
+      <div class="s-icon">&#9000;</div>
+      <h4>Remote Compute Server</h4>
+      <p>The computational workhorse. Mainly used by Haia. Goal: get all computational users working here.</p>
+      <span class="s-tag partial">Partial backup</span>
+    </div>
+    <div class="storage-item">
+      <div class="s-icon">&#9729;</div>
+      <h4>AWS Glacier</h4>
+      <p>Archive for published imaging data. Recently introduced. Cheap long-term storage for data that rarely needs access.</p>
+      <span class="s-tag backed">Backed up by design</span>
+    </div>
+    <div class="storage-item">
+      <div class="s-icon">&#128736;</div>
+      <h4>GitHub</h4>
+      <p>Just started. Lab organization exists. Haia is training students on git workflows in bi-weekly workshops.</p>
+      <span class="s-tag backed">Version controlled</span>
+    </div>
+  </div>
+
+  <div style="background: #fffbe6; border: 1px solid #f5e6a3; border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin-top: 2rem;">
+    <h4 style="color: #92400e; margin-bottom: 0.35rem;">The Missing Piece</h4>
+    <p style="font-size: 0.85rem; color: #78601a; margin-bottom: 0;">There is no catalog of what data exists in the lab, where it is, who generated it, what state it's in (raw / processed / published / archived), or whether it's backed up. Nobody has the full picture -- not even Uri, the lab director.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── Pain Points ─── -->
+<section id="problems">
+  <div class="section-label">Where Things Break</div>
+  <h2>Ten Problems We Found</h2>
+  <p class="lead">
+    Prioritized by impact. Red = high impact, orange = medium, gray = structural (won't go away but can be managed).
+  </p>
+
+  <div class="pain-list">
+    <div class="pain-item">
+      <div class="pain-rank high">1</div>
+      <div class="pain-content">
+        <h4>Haia is the computational bottleneck</h4>
+        <p>Non-computational students depend on a single bioinformatician for every analysis request. When she's busy, research stalls.</p>
+        <div class="quote">"Haia, run this for me" -- the default request from most experimentalists</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank high">2</div>
+      <div class="pain-content">
+        <h4>No data catalog or inventory</h4>
+        <p>Nobody knows what data the lab has collectively. Datasets are discoverable only if you know who generated them and can track them down personally.</p>
+        <div class="quote">"We don't have the macro view" -- Uri Ben-David</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank high">3</div>
+      <div class="pain-content">
+        <h4>Knowledge loss when students leave</h4>
+        <p>Students work 3-5 years then graduate. Their scripts, data organization, analysis decisions, and institutional knowledge leave with them. The next student starts from scratch.</p>
+        <div class="quote">"The next student who picks up the project starts from scratch -- different environment, different folder structure, incomplete docs"</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank med">4</div>
+      <div class="pain-content">
+        <h4>Duplicated reference data</h4>
+        <p>Every computational student downloads and stores their own copy of reference genomes (~50GB each). Five students = 250GB of identical data on the same server.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank med">5</div>
+      <div class="pain-content">
+        <h4>No standardized compute environment</h4>
+        <p>Each student installs their own packages, their own Python/R versions, their own tools. A new student spends roughly a week just getting set up.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank med">6</div>
+      <div class="pain-content">
+        <h4>Scattered storage with no index</h4>
+        <p>Data lives across 6+ locations. There's no way to search "do we have sequencing data from breast cancer cell lines?" without asking every person in the lab.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank med">7</div>
+      <div class="pain-content">
+        <h4>No validation of ad-hoc analyses</h4>
+        <p>Experimentalists use ChatGPT-generated R scripts without understanding or verifying them. Statistical errors could propagate into published research.</p>
+        <div class="quote">"They don't even know how to validate what ChatGPT gives them" -- Haia Khoury</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank struct">8</div>
+      <div class="pain-content">
+        <h4>Communication across 5+ channels</h4>
+        <p>Lab members communicate via Slack, WhatsApp, university email, personal email, and Google Docs. Finding a past conversation means searching everywhere.</p>
+        <div class="quote">Haia created a separate Gmail just to aggregate messages from all channels into one searchable place</div>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank struct">9</div>
+      <div class="pain-content">
+        <h4>Academic budget constraints</h4>
+        <p>Unlike a tech company, the lab can't throw money at cloud solutions. Every tool must be free, open-source, or use existing university infrastructure.</p>
+      </div>
+    </div>
+    <div class="pain-item">
+      <div class="pain-rank struct">10</div>
+      <div class="pain-content">
+        <h4>Resistance to change</h4>
+        <p>Biologists are conservative. Slack adoption took months of persistent pushing. Some students still refuse. Any solution must be obviously easier, not just theoretically better.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── The Plan ─── -->
+<section id="plan">
+  <div class="section-label">The Plan</div>
+  <h2>Small Steps, Visible Wins</h2>
+  <p class="lead lead-wide">
+    We don't ask anyone to change their behavior until we can show them why it's better. Each phase delivers something tangible within 2-4 weeks. We start with infrastructure, then tools, then knowledge systems, then AI.
+  </p>
+
+  <div class="roadmap">
+    <!-- Phase 0 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 0 -- Weeks 1-2</div>
+      <h3>Discovery &amp; Mapping</h3>
+      <p>Complete understanding of the current state. Map every data flow, every storage location, every tool. Interview one person from each persona. Visit the lab in person.</p>
+      <div class="phase-deliverables">
+        <span class="deliverable-tag">Data flow map</span>
+        <span class="deliverable-tag">Persona journey maps</span>
+        <span class="deliverable-tag">Data inventory v0</span>
+        <span class="deliverable-tag">Lab visit</span>
+        <span class="deliverable-tag">Quick win selection</span>
+      </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 1 -- Weeks 3-5</div>
+      <h3>Foundation: "Same Ground"</h3>
+      <p>Build shared infrastructure that removes friction without requiring behavior change. Nobody has to stop what they're doing -- but the standardized path becomes obviously easier.</p>
+      <div class="phase-deliverables">
+        <span class="deliverable-tag">Shared reference data</span>
+        <span class="deliverable-tag">Standard conda environment</span>
+        <span class="deliverable-tag">GitHub workflow docs</span>
+        <span class="deliverable-tag">Data inventory v1</span>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-label">Phase 2 -- Weeks 6-9</div>
+      <h3>First MVP: Copy Number Pipeline</h3>
+      <p>A working tool that any lab member can use to run copy number analysis independently -- no coding required, no Haia dependency. This is the moment standardization proves its value.</p>
+      <div class="phase-deliverables">
+        <span class="deliverable-tag">Automated pipeline</span>
+        <span class="deliverable-tag">Simple interface</span>
+        <span class="deliverable-tag">QC dashboard</span>
+        <span class="deliverable-tag">Step-by-step guide</span>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-dot future"></div>
+      <div class="phase-label">Phase 3 -- Weeks 10-14</div>
+      <h3>Knowledge Preservation</h3>
+      <p>Systems that prevent knowledge loss when students graduate. Standard project templates, metadata conventions, a new-member onboarding playbook, and a searchable lab data catalog.</p>
+      <div class="phase-deliverables">
+        <span class="deliverable-tag">Project folder template</span>
+        <span class="deliverable-tag">Naming conventions</span>
+        <span class="deliverable-tag">Onboarding playbook</span>
+        <span class="deliverable-tag">Lab data catalog v2</span>
+        <span class="deliverable-tag">AWS strategy</span>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase">
+      <div class="phase-dot future"></div>
+      <div class="phase-label">Phase 4 -- Weeks 15+</div>
+      <h3>AI-Powered Insights</h3>
+      <p>Once data is organized and standardized, AI can do what humans can't: find patterns across projects, validate analyses automatically, and surface insights nobody was looking for.</p>
+      <div class="phase-deliverables">
+        <span class="deliverable-tag">Cross-project pattern finder</span>
+        <span class="deliverable-tag">Automated QC reviewer</span>
+        <span class="deliverable-tag">Natural language data query</span>
+        <span class="deliverable-tag">Literature linker</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── AI Vision ─── -->
+<section id="vision">
+  <div class="section-label">The Future</div>
+  <h2>What AI Makes Possible</h2>
+  <p class="lead lead-wide">
+    The real payoff isn't just organization -- it's intelligence. Once lab data is structured and standardized, AI can extract insights that no individual researcher could find alone.
+  </p>
+
+  <div class="vision-grid">
+    <div class="vision-card">
+      <div class="v-icon">&#128269;</div>
+      <h4>Cross-Project Pattern Finder</h4>
+      <p>"Student A's cell line shows the same copy number pattern as the patient data Student B is analyzing." Connections that span years and projects, surfaced automatically.</p>
+    </div>
+    <div class="vision-card">
+      <div class="v-icon">&#9989;</div>
+      <h4>Automated QC Validator</h4>
+      <p>An AI reviewer that checks non-computational students' analyses for common errors: wrong statistical test, insufficient sample size, multiple comparison issues -- before they reach a paper draft.</p>
+    </div>
+    <div class="vision-card">
+      <div class="v-icon">&#128172;</div>
+      <h4>Natural Language Data Query</h4>
+      <p>"Show me all sequencing data from breast cancer cell lines processed in the last year." Query the entire lab's data catalog in plain language -- no SQL, no folder hunting.</p>
+    </div>
+    <div class="vision-card">
+      <div class="v-icon">&#128218;</div>
+      <h4>Literature Linker</h4>
+      <p>Automatically connect lab findings to relevant published papers. Surface new publications that relate to ongoing projects. Keep every researcher in the loop without manual literature reviews.</p>
+    </div>
+  </div>
+
+  <div style="background: var(--bg-alt); border-radius: var(--radius); padding: 2rem; margin-top: 2.5rem; text-align: center;">
+    <p style="font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-style: italic;">
+      "The potential here is dramatic. If we can create an effective system for managing this data, there's enormous knowledge that could be unlocked. If we don't, that knowledge stays on the floor."
+    </p>
+    <p style="font-size: 0.82rem; color: var(--text-light); margin-top: 0.75rem; margin-bottom: 0;">-- Yair Uziel, Tech for Cancer</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── Change Management ─── -->
+<section id="change">
+  <div class="section-label">The Strategy</div>
+  <h2>Why Small Steps Matter</h2>
+  <p class="lead lead-wide">
+    The biggest risk to this project isn't technical -- it's adoption. Biologists are conservative, each student feels ownership of their workflow, and past standardization attempts have seen resistance. Our approach: <strong>don't announce a new system -- make the new way obviously better and let people discover it.</strong>
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon" style="background: #e8f6f0; color: #2ea87e;">1</div>
+      <h3>Start With Champions</h3>
+      <p>Haia and Yael are already pushing for improvement. We amplify their efforts, not compete with them. They co-design every solution.</p>
+    </div>
+    <div class="card">
+      <div class="icon" style="background: #f0e8ff; color: #7c6dd8;">2</div>
+      <h3>Win the Early Adopters</h3>
+      <p>Hybrid researchers are tech-curious and open to change. When they adopt standardized tools, they influence experimentalists by example.</p>
+    </div>
+    <div class="card">
+      <div class="icon" style="background: #fff3e0; color: #e07c4f;">3</div>
+      <h3>Build for Experimentalists</h3>
+      <p>Give non-coders tools so simple that using them is easier than the current ad-hoc approach. Adoption should feel like a shortcut, not a mandate.</p>
+    </div>
+    <div class="card">
+      <div class="icon" style="background: #eef4ff; color: #3a8fd4;">4</div>
+      <h3>Computational Last</h3>
+      <p>Independent coders are hardest to standardize. Let them see the infrastructure benefits (shared environments, no duplication, faster onboarding) before asking them to change.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── Glossary ─── -->
+<section id="glossary">
+  <div class="section-label">Reference</div>
+  <h2>Glossary for Non-Biologists</h2>
+  <p class="lead">
+    Key terms from the lab's world, translated to plain English.
+  </p>
+
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">Aneuploidy</div>
+      <div class="glossary-def">Having the wrong number of chromosomes in a cell. Cancer cells almost always have this.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">FASTQ</div>
+      <div class="glossary-def">A text file format for storing DNA/RNA sequencing data. Each "read" is 4 lines of text.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Copy Number</div>
+      <div class="glossary-def">How many copies of a gene or chromosome segment a cell has. Normal = 2. Cancer cells often have more or fewer.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Pipeline</div>
+      <div class="glossary-def">A sequence of computational steps that process data automatically -- like an assembly line for data analysis.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Reference Genome</div>
+      <div class="glossary-def">The "standard" human genome that researchers compare their sequencing data against. About 3 billion letters.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Cell Line</div>
+      <div class="glossary-def">Cancer cells grown in the lab that can be kept alive indefinitely for experiments. Some are decades old.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">PI (Principal Investigator)</div>
+      <div class="glossary-def">The professor who leads the lab. Responsible for funding, direction, and scientific output. Uri Ben-David in this case.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Wet Lab / Bench</div>
+      <div class="glossary-def">Physical lab work with actual biological materials -- cells, chemicals, microscopes, pipettes.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Dry Lab / Computational</div>
+      <div class="glossary-def">Computer-based analysis of biological data. No test tubes -- just code and data.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Sequencing</div>
+      <div class="glossary-def">Reading the DNA or RNA code of a biological sample, letter by letter (A, T, C, G).</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Bioinformatics</div>
+      <div class="glossary-def">Using computer science to analyze biological data. The bridge between biology and data science.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">QC (Quality Control)</div>
+      <div class="glossary-def">Checks to ensure data and results meet quality standards before being used for conclusions.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── CTA / Next Steps ─── -->
+<section class="cta-section">
+  <div class="section-label">Next Steps</div>
+  <h2>Ready to Start</h2>
+  <p>Phase 0 begins now. Haia and Yael will map the data flows. Tal will visit the lab. In two weeks, we'll have the complete picture and a confirmed plan for Phase 1.</p>
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+    <div style="background: var(--accent-bg); border-radius: var(--radius-sm); padding: 0.75rem 1.25rem;">
+      <div style="font-weight: 650; font-size: 0.85rem; color: var(--accent);">Week 1</div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">Data flow mapping begins</div>
+    </div>
+    <div style="background: var(--accent-bg); border-radius: var(--radius-sm); padding: 0.75rem 1.25rem;">
+      <div style="font-weight: 650; font-size: 0.85rem; color: var(--accent);">Week 1-2</div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">Lab visit &amp; interviews</div>
+    </div>
+    <div style="background: var(--accent-bg); border-radius: var(--radius-sm); padding: 0.75rem 1.25rem;">
+      <div style="font-weight: 650; font-size: 0.85rem; color: var(--accent);">Week 2</div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary);">Review &amp; confirm Phase 1</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <p>Tech for Cancer &times; Ben-David Lab &mdash; Tel Aviv University, Faculty of Medicine</p>
+  <p style="margin-top: 0.35rem;">Research & Plan by Tal Moneta &middot; February 2026</p>
+  <hr style="border: none; border-top: 1px solid var(--border); margin: 1.5rem auto; max-width: 500px;">
+  <p style="font-size: 0.72rem; line-height: 1.7; max-width: 560px; margin: 0 auto;">
+    <strong>This works if:</strong> Lab members (especially Haia and Yael) remain engaged as co-designers and Uri endorses the direction.<br>
+    <strong>We'll know it's working when:</strong> At least 2 non-computational lab members independently run the copy number pipeline without Haia's help.<br>
+    <strong>Most likely to fail because:</strong> Adoption stalls -- tools don't reduce friction enough to justify changing habits.
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ben-David Lab — Group Briefing (March 2026)</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-card: #ffffff;
+    --bg-alt: #f7f8fa;
+    --text: #1a1a2e;
+    --text-secondary: #5a5a7a;
+    --text-light: #8888a4;
+    --accent: #0d7377;
+    --accent-light: #14a3a8;
+    --accent-bg: #e8f6f6;
+    --border: #e4e6ec;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.07);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.75rem;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nav .logo { font-weight: 700; font-size: 0.9rem; color: var(--accent); letter-spacing: -0.02em; }
+  nav .logo span { color: var(--text-light); font-weight: 450; }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.15rem; justify-content: flex-end; }
+  nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+  }
+  nav a:hover { color: var(--accent); background: var(--accent-bg); }
+
+  section { padding: 4.5rem 1.75rem; max-width: 980px; margin: 0 auto; }
+  section:first-of-type { padding-top: 7rem; }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin-bottom: 0.65rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 4vw, 2.65rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.85rem;
+  }
+  h3 { font-size: 1.05rem; font-weight: 650; margin-bottom: 0.45rem; }
+  p { margin-bottom: 0.9rem; font-size: 0.95rem; color: var(--text-secondary); }
+  p.lead { font-size: 1.08rem; line-height: 1.7; max-width: 700px; }
+  ul.bullets { margin: 0.75rem 0 0 1.1rem; color: var(--text-secondary); font-size: 0.92rem; }
+  ul.bullets li { margin-bottom: 0.45rem; }
+
+  .hero {
+    min-height: 72vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 2rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 0.32rem 0.85rem;
+    border-radius: 100px;
+    margin-bottom: 1.25rem;
+    width: fit-content;
+  }
+  .hero-meta {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-top: 1.25rem;
+  }
+
+  .divider { height: 1px; background: var(--border); max-width: 980px; margin: 0 auto; }
+
+  /* Executive strip — 3 columns */
+  .exec-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2.25rem;
+  }
+  .exec-card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.35rem 1.25rem;
+  }
+  .exec-card .ec-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+  }
+  .exec-card .ec-title { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 0.4rem; }
+  .exec-card p { font-size: 0.84rem; margin-bottom: 0; line-height: 1.55; }
+
+  /* Solution / aim / start — big cards */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+  }
+  .pillar {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.85rem;
+    background: var(--bg-card);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .pillar:hover { box-shadow: var(--shadow-lg); }
+  .pillar-num {
+    display: inline-flex;
+    width: 28px; height: 28px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+  .pillar h3 { font-size: 1.12rem; color: var(--text); }
+  .pillar p, .pillar li { font-size: 0.9rem; }
+
+  .highlight-box {
+    background: linear-gradient(135deg, var(--accent-bg) 0%, #f3f6ff 100%);
+    border: 1px solid rgba(13,115,119,0.12);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-top: 1.5rem;
+  }
+  .highlight-box p { margin-bottom: 0; font-size: 0.9rem; }
+
+  /* Portal diagram — simple */
+  .portal-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.25rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+  .portal-flow .node {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .portal-flow .arrow { color: var(--text-light); }
+
+  /* Haia section */
+  .agreement-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .agreement-card {
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem 1.35rem;
+    border: 1px solid var(--border);
+  }
+  .agreement-card h4 { font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text); }
+  .agreement-card p { font-size: 0.82rem; margin-bottom: 0; }
+
+  /* IT checklist */
+  .it-list {
+    margin-top: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .it-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    padding: 0.9rem 1.15rem;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    font-size: 0.86rem;
+  }
+  .it-row:last-child { border-bottom: none; }
+  .it-row:nth-child(odd) { background: #fafbfc; }
+  .it-q { color: var(--text); font-weight: 500; }
+  .it-owner { font-size: 0.72rem; color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  .link-card {
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+  .link-card a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .link-card a:hover { text-decoration: underline; }
+  .link-card p { margin-bottom: 0.35rem; font-size: 0.82rem; }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 0.74rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+  }
+  footer hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.25rem auto;
+    max-width: 520px;
+  }
+
+  @media (max-width: 768px) {
+    .exec-strip { grid-template-columns: 1fr; }
+    .agreement-grid { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">T4C <span>/ Ben-David Lab</span></div>
+  <ul>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#aim">Aim</a></li>
+    <li><a href="#start">Start</a></li>
+    <li><a href="#haia">Haia sync</a></li>
+    <li><a href="#it">IT gates</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-badge">Group briefing &middot; March 2026</div>
+  <h1>Lab data, one front door — and a path everyone can adopt</h1>
+  <p class="lead">
+    This page summarizes where Tech for Cancer is headed with Uri Ben-David&rsquo;s lab: the <strong>solution direction</strong> we are taking, <strong>what we are aiming for</strong>, and <strong>what we will start with first</strong> — including decisions from the latest working session with Haia (bioinformatics lead).
+  </p>
+  <p class="hero-meta">
+    Companion to the full research deck: <a href="https://talmoneta.github.io/pages/t4c-bendavid-lab-research.html" style="color: var(--accent); font-weight: 600;">Research page (hosted)</a>
+  </p>
+
+  <div class="exec-strip">
+    <div class="exec-card">
+      <div class="ec-label">Context</div>
+      <div class="ec-title">Fragmented data &amp; workflows</div>
+      <p>Many storage locations, no catalog, heavy load on Haia for computation. Wet-lab work is individualized by design; we do not need to standardize every intermediate step.</p>
+    </div>
+    <div class="exec-card">
+      <div class="ec-label">Direction</div>
+      <div class="ec-title">A lab portal + shared context</div>
+      <p>One browser &ldquo;home&rdquo; for starting research, uploading outputs, searching, and guided steps — wired behind the scenes to agreed storage and tools.</p>
+    </div>
+    <div class="exec-card">
+      <div class="ec-label">First move</div>
+      <div class="ec-title">Computational pilot</div>
+      <p>Simplest flow with people most likely to adopt (50/50 and 100% computational students), then expand. Validate hosting &amp; network with university IT.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="solution">
+  <div class="section-label">High level</div>
+  <h2>The solution we are going with</h2>
+  <p class="lead">
+    We are not asking everyone to abandon Excel, Slack, or personal folders overnight. The bet is a <strong>thin, friendly layer</strong> — a <strong>lab portal</strong> — that becomes the default place to <em>start</em> work, <em>hand off</em> outputs, and <em>find</em> what matters, while integrations push data into shared, backed-up locations without users juggling paths and servers.
+  </p>
+
+  <div class="pillar-grid">
+    <div class="pillar">
+      <div class="pillar-num">1</div>
+      <h3>Lab portal (single entry point)</h3>
+      <p>A web experience researchers open in the browser — similar in spirit to setting the lab intranet or a team homepage as the start page. From there they can:</p>
+      <ul class="bullets">
+        <li>Start or continue a research thread (guided questions: topic, related prior work, uploads).</li>
+        <li>Drag-and-drop files so uploads land in the <em>right</em> shared place without hunting for folders.</li>
+        <li>Search across connected storage (e.g. lab drive / server paths we wire in).</li>
+        <li>Use checklists for required steps (e.g. backup, naming, QC) so compliance is visible, not tribal knowledge.</li>
+        <li>Optional: light inventory hooks (e.g. tagging reagent use) — &ldquo;behind the scenes&rdquo; decrements can be modeled later.</li>
+      </ul>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">2</div>
+      <h3>Shared context (markdown + skills mindset)</h3>
+      <p>Meetings and decisions accumulate as <strong>structured context</strong> (e.g. markdown in a repo or folder the lab owns) so assistants and future automation know <em>who owns what</em>, <em>which tools apply</em>, and <em>how analyses should be validated</em>. This mirrors how we work internally: one place for truth, iterated over time — the lab does not have to use GitHub, but the <em>idea</em> is the same.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">3</div>
+      <h3>AI where it helps — not where it leaks</h3>
+      <p>Skills / prompts can encode: &ldquo;check for similar past work,&rdquo; &ldquo;produce tables with these statistical rules,&rdquo; &ldquo;push results back to the repo.&rdquo; <strong>Enterprise vs shared Pro accounts</strong> and <strong>API usage</strong> must align with university policy and NDA constraints — validated before any patient or collaborator data flows through external APIs.</p>
+    </div>
+  </div>
+
+  <div class="portal-flow" aria-label="Conceptual flow">
+    <span class="node">Researcher</span>
+    <span class="arrow">&rarr;</span>
+    <span class="node">Portal UI</span>
+    <span class="arrow">&rarr;</span>
+    <span class="node">Routing + checklist</span>
+    <span class="arrow">&rarr;</span>
+    <span class="node">Shared storage / server</span>
+    <span class="arrow">&rarr;</span>
+    <span class="node">Optional AI (policy-safe)</span>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Wet lab vs dry lab (Haia, March 15):</strong> For wet-lab work, the <em>pattern</em> is similar across people even if filing differs — focus on <strong>start</strong> (&ldquo;has anyone done this experiment?&rdquo;) and <strong>end</strong> (outputs, backup, what enters a paper). The messy middle is often disposable; we should not force everyone&rsquo;s mind-map or filing style to change. For computational work, unifying pipelines, GitHub, and server usage is the higher-leverage standardization.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="aim">
+  <div class="section-label">Outcomes</div>
+  <h2>What we aim for</h2>
+  <p class="lead">
+    Success is not &ldquo;everyone uses one app for everything.&rdquo; It is <strong>shorter time from question to trusted result</strong>, <strong>less duplicate effort</strong>, and <strong>knowledge that survives student turnover</strong>.
+  </p>
+  <ul class="bullets">
+    <li><strong>Reduce the bioinformatics bottleneck:</strong> repeatable flows so not every analysis queues through Haia for the same class of task.</li>
+    <li><strong>One coherent picture of lab data:</strong> a path toward a catalog / index of what exists, where it lives, and who owns it.</li>
+    <li><strong>Standardization where it compounds:</strong> shared environments, reference data, pipelines, and Git — especially for computational work.</li>
+    <li><strong>Adoption by design:</strong> the weakest link is not the tech — it is whether the easiest user finds the portal obviously easier than the status quo. The experience must work for low tech-savvy users (guided clicks, not terminal literacy).</li>
+    <li><strong>Safe AI:</strong> insights and QC assistance only where data classification and university policy allow; otherwise on-prem or deferred.</li>
+  </ul>
+</section>
+
+<div class="divider"></div>
+
+<section id="start">
+  <div class="section-label">Scope</div>
+  <h2>What we will start with</h2>
+  <p class="lead">
+    We start <strong>narrow</strong>: one persona track, the <strong>simplest end-to-end flow</strong>, and people <strong>most likely to partner</strong> and give feedback — not the hardest case first.
+  </p>
+
+  <div class="pillar-grid">
+    <div class="pillar">
+      <div class="pillar-num">A</div>
+      <h3>Computational group first</h3>
+      <p>Agreement with Haia: the <strong>computational</strong> side is the best first beachhead — they already push toward shared server, GitHub, and unified pipelines; success is visible to others at the bench. Wet-lab–only workflows stay second unless a very simple &ldquo;start / finish&rdquo; pattern is enough.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">B</div>
+      <h3>Simplest flow + strongest adopter</h3>
+      <p>Pick one flow (e.g. a defined pipeline or &ldquo;new analysis&rdquo; path) and one or two researchers who are <strong>motivated and sticky</strong> (enough time left in the lab, willing to try tools). Candidates discussed: <strong>50/50</strong> wet/dry students (e.g. Adi and a peer) and/or the newer <strong>100% computational</strong> student — people who will stress-test the portal and Git patterns without disappearing next semester.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">C</div>
+      <h3>Validate IT &amp; infra before big build</h3>
+      <p>Before scaling UI: confirm <strong>where the portal can be hosted</strong> (university server vs external), <strong>VPN / GlobalProtect</strong> access to internal storage, <strong>connectors</strong> to lab file server and OneDrive/Microsoft APIs, and <strong>policy</strong> on external LLM APIs for research data. Haia can relay questions to campus IT; we proceed when we have &ldquo;good to go&rdquo; answers.</p>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>Parallel track (already in motion):</strong> Haia continues unifying pipelines, GitHub practice, and server usage — the portal should <em>ride on</em> that foundation, not replace it overnight.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="haia">
+  <div class="section-label">March 15, 2026</div>
+  <h2>Sync with Haia — what we aligned on</h2>
+  <p class="lead">Working session (audio transcribed). Below are the commitments and principles that feed the sections above.</p>
+
+  <div class="agreement-grid">
+    <div class="agreement-card">
+      <h4>Portal definition</h4>
+      <p>A browser home page for the lab: guided flows (e.g. new vs continuing research), uploads, search, optional AI — all routing to shared storage behind the scenes so users &ldquo;just drag here&rdquo; without learning folder topology.</p>
+    </div>
+    <div class="agreement-card">
+      <h4>Wet vs dry</h4>
+      <p>Do not fight individual mind-maps for bench work. Standardize <strong>inputs/outputs</strong> and backups; leave intermediate chaos lower priority. Computational standardization has higher ROI first.</p>
+    </div>
+    <div class="agreement-card">
+      <h4>Security &amp; access</h4>
+      <p>Allowlist lab members; not an open internet wiki. University network (VPN) and hosting constraints must be checked before assuming remote access to servers works like a SaaS product.</p>
+    </div>
+    <div class="agreement-card">
+      <h4>Claude / AI</h4>
+      <p>Shared non-enterprise accounts blur privacy between users; Pro vs Enterprise and API usage matter for team isolation and cost. Align with lab + university rules before sending sensitive data to any external model.</p>
+    </div>
+    <div class="agreement-card">
+      <h4>Pilot people</h4>
+      <p>Prefer 50/50 researchers with passion for computation + runway (MD-PhD), and/or dedicated computational students — they give the best feedback loop for the first portal slice.</p>
+    </div>
+    <div class="agreement-card">
+      <h4>Next step</h4>
+      <p>Haia to think through technical blockers; Tal to send a concise IT question list; iterate on WhatsApp; in-person lab visit when practical.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="it">
+  <div class="section-label">Dependencies</div>
+  <h2>IT &amp; infrastructure questions (before scale)</h2>
+  <p class="lead">These need yes/no or owner from university IT — not blockers for a paper prototype, but blockers for production and data-bearing integrations.</p>
+
+  <div class="it-list">
+    <div class="it-row">
+      <div class="it-q">Can a small web app be hosted on approved university infrastructure (VM, department web, or existing compute server with HTTP)?</div>
+      <div class="it-owner">IT / Haia</div>
+    </div>
+    <div class="it-row">
+      <div class="it-q">Is access from off-campus via GlobalProtect (or equivalent) sufficient for lab members to use an internal portal?</div>
+      <div class="it-owner">IT</div>
+    </div>
+    <div class="it-row">
+      <div class="it-q">What protocols/APIs are allowed to reach the lab file server and shared drives from an application (SMB, Graph API for OneDrive, etc.)?</div>
+      <div class="it-owner">IT</div>
+    </div>
+    <div class="it-row">
+      <div class="it-q">What is the policy on sending research or collaboration (NDA) data to external APIs (e.g. Claude/OpenAI)? Is anonymization enough?</div>
+      <div class="it-owner">Compliance / PI</div>
+    </div>
+    <div class="it-row">
+      <div class="it-q">Is SSO / university identity available for a lab tool, or is email allowlist acceptable for v1?</div>
+      <div class="it-owner">IT</div>
+    </div>
+    <div class="it-row">
+      <div class="it-q">Who funds API usage and hosting if not on free tier — lab grant, department, or T4C?</div>
+      <div class="it-owner">Uri / T4C</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="link-card">
+  <p>Full background research, personas, data map, and roadmap:</p>
+  <a href="https://talmoneta.github.io/pages/t4c-bendavid-lab-research.html">Open the full research page &rarr;</a>
+</section>
+
+<footer>
+  <p>Tech for Cancer &times; Ben-David Lab &mdash; Tel Aviv University</p>
+  <p style="margin-top: 0.35rem;">Group briefing page &middot; March 2026</p>
+</footer>
+
+</body>
+</html>
