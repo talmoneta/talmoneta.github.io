@@ -224,7 +224,8 @@
   .it-row {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 1rem;
+    grid-template-rows: auto auto auto;
+    gap: 0.35rem 1rem;
     padding: 0.9rem 1.15rem;
     border-bottom: 1px solid var(--border);
     align-items: start;
@@ -232,8 +233,47 @@
   }
   .it-row:last-child { border-bottom: none; }
   .it-row:nth-child(odd) { background: #fafbfc; }
-  .it-q { color: var(--text); font-weight: 500; }
-  .it-owner { font-size: 0.72rem; color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .it-q { grid-column: 1; grid-row: 1; color: var(--text); font-weight: 500; }
+  .it-owner { grid-column: 2; grid-row: 1; font-size: 0.72rem; color: var(--accent); font-weight: 600; white-space: nowrap; justify-self: end; }
+  .it-answer {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    padding-top: 0.65rem;
+    margin-top: 0.35rem;
+    border-top: 1px dashed var(--border);
+  }
+  .it-answer strong { color: var(--text); font-weight: 650; }
+  .it-row > .it-tag {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-self: start;
+  }
+  .it-tag {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.22rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.15rem;
+  }
+  .it-tag.answered { background: #d1fae5; color: #065f46; }
+  .it-tag.partial { background: #fef3c7; color: #92400e; }
+  .it-tag.escalate { background: #fee2e2; color: #991b1b; }
+  .it-tag.open { background: #e0e7ff; color: #3730a3; }
+  .it-source {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
 
   .link-card {
     margin-top: 2rem;
@@ -444,7 +484,7 @@
     </div>
     <div class="agreement-card">
       <h4>Next step</h4>
-      <p>Haia to think through technical blockers; Tal to send a concise IT question list; iterate on WhatsApp; in-person lab visit when practical.</p>
+      <p>Haia surfaced questions across Computing Division; we have first answers from Microsoft Infrastructures (see IT section). Next: written position from <strong>infosec@tauex.tau.ac.il</strong> on LLMs; define <strong>public vs campus-only</strong> and <strong>server-side vs browser</strong> storage writes; confirm lab file-server path with the right owners.</p>
     </div>
   </div>
 </section>
@@ -452,36 +492,68 @@
 <div class="divider"></div>
 
 <section id="it">
-  <div class="section-label">Dependencies</div>
-  <h2>IT &amp; infrastructure questions (before scale)</h2>
-  <p class="lead">These need yes/no or owner from university IT — not blockers for a paper prototype, but blockers for production and data-bearing integrations.</p>
+  <div class="section-label">TAU Computing Division</div>
+  <h2>IT &amp; infrastructure — answers (via Haia)</h2>
+  <p class="lead">Haia routed our questions through university IT. Below is a concise read of the reply from <strong>Yochai</strong> (team leader, Microsoft Infrastructures, Computing Division). <a href="https://github.com/talmoneta/talmoneta.github.io/blob/main/it-tau-computing-division-response-2026.md">Full verbatim thread (markdown) &rarr;</a></p>
 
   <div class="it-list">
     <div class="it-row">
-      <div class="it-q">Can a small web app be hosted on approved university infrastructure (VM, department web, or existing compute server with HTTP)?</div>
-      <div class="it-owner">IT / Haia</div>
+      <div class="it-q">1. Hosting a lab web app on university infrastructure</div>
+      <div class="it-owner">Answered</div>
+      <div class="it-answer"><strong>Yes, hosting exists</strong> — which offering fits depends on <strong>stack and runtime</strong>. Must decide up front: <strong>public</strong> (tau.ac.il) vs <strong>campus / internal only</strong>. Public sites: GDPR-style privacy + accessibility expectations and <strong>information security pen-test approval</strong>.</div>
+      <span class="it-tag answered">Proceed — specify architecture</span>
     </div>
     <div class="it-row">
-      <div class="it-q">Is access from off-campus via GlobalProtect (or equivalent) sufficient for lab members to use an internal portal?</div>
-      <div class="it-owner">IT</div>
+      <div class="it-q">2. Internal-only vs public — what drops away?</div>
+      <div class="it-owner">Answered</div>
+      <div class="it-answer">Public = full requirement set. Not publicly facing = <strong>GDPR set excluded</strong>, but <strong>pen-testing may still be required</strong>.</div>
+      <span class="it-tag partial">Bias to internal if we can</span>
     </div>
     <div class="it-row">
-      <div class="it-q">What protocols/APIs are allowed to reach the lab file server and shared drives from an application (SMB, Graph API for OneDrive, etc.)?</div>
-      <div class="it-owner">IT</div>
+      <div class="it-q">3. VPN (e.g. GlobalProtect) vs always-on access</div>
+      <div class="it-owner">Design</div>
+      <div class="it-answer"><strong>Depends who writes to storage.</strong> If the <strong>server (hosting)</strong> writes to central storage, it can work without user VPN — often implies the site is <strong>public-facing</strong>. If the <strong>browser</strong> writes, expect <strong>VPN + authentication</strong>. They need a clearer picture of our app behavior.</div>
+      <span class="it-tag partial">Pick server-side vs client path early</span>
     </div>
     <div class="it-row">
-      <div class="it-q">What is the policy on sending research or collaboration (NDA) data to external APIs (e.g. Claude/OpenAI)? Is anonymization enough?</div>
-      <div class="it-owner">Compliance / PI</div>
+      <div class="it-q">4. Lab file server, OneDrive / M365, protocols</div>
+      <div class="it-owner">Partial</div>
+      <div class="it-answer">No comms blocker in principle; <strong>not sole decision maker</strong> for lab shares. Each hosting option has its own rules after pen-test. <strong>M365 / OneDrive from the app: case-by-case.</strong> For files: <strong>SMB on university central storage</strong> called out as simplest path.</div>
+      <span class="it-tag partial">Confirm lab share + SMB with owners</span>
     </div>
     <div class="it-row">
-      <div class="it-q">Is SSO / university identity available for a lab tool, or is email allowlist acceptable for v1?</div>
-      <div class="it-owner">IT</div>
+      <div class="it-q">5. File server vs compute server — different rules?</div>
+      <div class="it-owner">Partial</div>
+      <div class="it-answer">Tied to <strong>which hosting service</strong> and features. Need agreed <strong>technology stack</strong> (not only &ldquo;simple HTML&rdquo; — <strong>backend unclear</strong> in their view).</div>
+      <span class="it-tag open">Same as #1 — narrow stack</span>
     </div>
     <div class="it-row">
-      <div class="it-q">Who funds API usage and hosting if not on free tier — lab grant, department, or T4C?</div>
-      <div class="it-owner">Uri / T4C</div>
+      <div class="it-q">6. SSO vs email allowlist</div>
+      <div class="it-owner">Answered</div>
+      <div class="it-answer"><strong>Implementer&rsquo;s choice</strong> — our programmers decide how to authenticate.</div>
+      <span class="it-tag answered">Flexible for v1</span>
+    </div>
+    <div class="it-row">
+      <div class="it-q">7–8. Research / NDA data → external LLMs (Claude, OpenAI, etc.)</div>
+      <div class="it-owner">Escalate</div>
+      <div class="it-answer">Not their remit — contact <strong>infosec@tauex.tau.ac.il</strong>. Their working assumption: <strong>sending research data to LLMs is strictly forbidden</strong> (confirm in writing with infosec).</div>
+      <span class="it-tag escalate">Email infosec — do not assume OK</span>
+    </div>
+    <div class="it-row">
+      <div class="it-q">9. API keys &amp; usage-based AI billing via Computing Division</div>
+      <div class="it-owner">Answered</div>
+      <div class="it-answer"><strong>Computing Division does not sell</strong> subscriptions for usage-based API keys (usage != fixed price). Budget path is outside this answer.</div>
+      <span class="it-tag partial">Plan lab / T4C / dept budget separately</span>
+    </div>
+    <div class="it-row">
+      <div class="it-q">10. Budget / free-tier preferences</div>
+      <div class="it-owner">—</div>
+      <div class="it-answer">Not addressed (&ldquo;lost you here&rdquo;) — can re-ask once architecture one-pager exists.</div>
+      <span class="it-tag open">Re-ask with context</span>
     </div>
   </div>
+
+  <p class="it-source"><strong>What they asked us to do next:</strong> define more strictly what the application must do (public vs internal, stack, server vs browser access to storage) <em>before</em> locking what is possible on university infrastructure.</p>
 </section>
 
 <div class="divider"></div>
